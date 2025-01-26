@@ -1,0 +1,58 @@
+# Python specific
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+*.env
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Flask specific
+instance/
+*.sqlite3
+*.db
+instance/
+config.py
+
+# Node specific
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnpm-debug.log
+package-lock.json
+yarn.lock
+
+# React specific
+build/
+coverage/
+
+# Editor and OS specific
+.vscode/
+.idea/
+*.swp
+.DS_Store
+*.log
+*.sublime-workspace
+*.sublime-project
+*.stackdump
+Thumbs.db
+
+# Testing and linting
+coverage/
+*.pytest_cache/
+.cache/
+.pytest_cache/
+.mypy_cache/
+.tox/
+
+# Production deployment files
+*.bak
+*.swp
+*.key
+*.pem
