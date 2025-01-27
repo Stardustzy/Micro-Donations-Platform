@@ -1,18 +1,19 @@
+# server/routes/cause_routes.py
 from flask import Blueprint, request, jsonify
-from app import db
-from app.models import Cause
+from server.app import db
+from server.models import Cause
 
-cause_bp = Blueprint('cause', __name__, url_prefix='/causes')
+cause_blueprint = Blueprint('cause', __name__, url_prefix='/causes')
 
 
-@cause_bp.route('/', methods=['GET'])
+@cause_blueprint.route('/', methods=['GET'])
 def get_all_causes():
     """Retrieve all causes."""
     causes = Cause.query.all()
     return jsonify([cause.to_dict() for cause in causes]), 200
 
 
-@cause_bp.route('/<int:id>', methods=['GET'])
+@cause_blueprint.route('/<int:id>', methods=['GET'])
 def get_cause(id):
     """Retrieve a single cause by ID."""
     cause = Cause.query.get(id)
@@ -22,7 +23,7 @@ def get_cause(id):
     return jsonify(cause.to_dict()), 200
 
 
-@cause_bp.route('/', methods=['POST'])
+@cause_blueprint.route('/', methods=['POST'])
 def create_cause():
     """Create a new cause."""
     data = request.get_json()
@@ -37,7 +38,7 @@ def create_cause():
     return jsonify({'message': 'Cause created successfully', 'cause': new_cause.to_dict()}), 201
 
 
-@cause_bp.route('/<int:id>', methods=['PUT'])
+@cause_blueprint.route('/<int:id>', methods=['PUT'])
 def update_cause(id):
     """Update an existing cause."""
     cause = Cause.query.get(id)
@@ -55,7 +56,7 @@ def update_cause(id):
     return jsonify({'message': 'Cause updated successfully', 'cause': cause.to_dict()}), 200
 
 
-@cause_bp.route('/<int:id>', methods=['DELETE'])
+@cause_blueprint.route('/<int:id>', methods=['DELETE'])
 def delete_cause(id):
     """Delete a cause by ID."""
     cause = Cause.query.get(id)

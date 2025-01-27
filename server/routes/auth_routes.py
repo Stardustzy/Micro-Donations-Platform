@@ -1,12 +1,13 @@
+#server/routes/auth_routes.py
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db
-from app.models import User
+from server.app import db
+from server.models import User
 
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+auth_blueprint = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@auth_bp.route('/register', methods=['POST'])
+@auth_blueprint.route('/register', methods=['POST'])
 def register():
     """Register a new user."""
     data = request.get_json()
@@ -25,7 +26,7 @@ def register():
     return jsonify({'message': 'User registered successfully', 'user': {'username': new_user.username, 'email': new_user.email}}), 201
 
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_blueprint.route('/login', methods=['POST'])
 def login():
     """Log in a user."""
     data = request.get_json()
@@ -40,7 +41,7 @@ def login():
     return jsonify({'error': 'Invalid credentials'}), 401
 
 
-@auth_bp.route('/logout', methods=['POST'])
+@auth_blueprint.route('/logout', methods=['POST'])
 def logout():
     """Log out a user."""
     # Placeholder for logout logic (e.g., token revocation if implementing JWT)

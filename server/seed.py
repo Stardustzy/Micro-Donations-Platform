@@ -1,5 +1,5 @@
 from app import db
-from app.models import User, Cause, Donation, Reward, UserReward
+from models import User, Cause, Donation, Reward, UserReward
 from werkzeug.security import generate_password_hash
 
 def seed():
