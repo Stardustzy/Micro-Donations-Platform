@@ -17,7 +17,7 @@ def create_app():
     app = Flask(__name__)
 
     # Load configuration from the config file
-    config_name = os.getenv("FLASK_CONFIG", "production")  # Default to production for deployment
+    config_name = os.getenv("FLASK_CONFIG", "production")  
     app.config.from_object(configurations[config_name])
 
     # Initialize extensions
