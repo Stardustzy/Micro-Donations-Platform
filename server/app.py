@@ -3,21 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from app.config import Config
-from app.models import db
-from app.routes.auth_routes import auth_blueprint
-from app.routes.cause_routes import cause_blueprint
-from app.routes.donation_routes import donation_blueprint
-
-# Initialize Flask extensions
-migrate = Migrate()
-db = SQLAlchemy()
+from app.models import User, Cause, Donation, UserReward, Reward
+from app import db
+from app.routes import auth_blueprint, cause_blueprint, donation_blueprint, reward_blueprint
 
 # Initialize Flask app
-
 def create_app( ):
-    """
-    Application factory function to create and configure the Flask app.
-    """
     app = Flask(__name__)
 
     # Load configuration from the config file
@@ -25,7 +16,7 @@ def create_app( ):
 
     # Initialize extensions
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate = Migrate(app, db)
 
     # Enable Cross-Origin Resource Sharing (CORS)
     CORS(app, resources={r"/*": {"origins": "*"}})
