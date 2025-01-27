@@ -25,6 +25,7 @@ def create_app( ):
     app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
     app.register_blueprint(cause_blueprint, url_prefix='/api/causes')
     app.register_blueprint(donation_blueprint, url_prefix='/api/donations')
+    app.register_blueprint(reward_blueprint, url_prefix='/api/rewards')
 
     # Root route for testing
     @app.route('/')
