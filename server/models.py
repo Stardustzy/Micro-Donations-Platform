@@ -48,10 +48,22 @@ class Donation(db.Model):
     donated_at = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     cause_id = db.Column(db.Integer, db.ForeignKey('causes.id'), nullable=False)
+    message = db.Column(db.Text, nullable=True)
+    reward_tier = db.Column(db.String(50), nullable=True)
 
     # Relationships
     user = relationship('User', back_populates='donations')
     cause = relationship('Cause', back_populates='donations')
+
+    def assign_reward(self):
+        if self.amount >= 100:
+            self.reward_tier = "Gold"
+        elif self.amount >= 50:
+            self.reward_tier = "Silver"
+        elif self.amount >= 20:
+            self.reward_tier = "Bronze"
+        else:
+            self.reward_tier = None
 
     def __repr__(self):
         return f"<Donation {self.amount} to Cause {self.cause_id}>"
