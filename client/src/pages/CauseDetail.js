@@ -11,6 +11,7 @@ const CauseDetail = () => {
     const [donationAmount, setDonationAmount] = useState("");
     const [message, setMessage] = useState("");
     const [totalDonations, setTotalDonations] = useState(0);
+    const [donors, setDonors] = useState([]);
 
     useEffect(() => {
         const fetchCause = async () => {
@@ -78,6 +79,15 @@ const CauseDetail = () => {
             <p><strong>Funding Goal:</strong> ${cause.funding_goal}</p>
             <p><strong>Total Raised:</strong> ${cause.amount_raised}</p>
             <p><strong>Total Donations:</strong> ${totalDonations}</p>
+
+            <h4>Donors & Rewards</h4>
+            <ul>
+                {donors.map((donor) => (
+                    <li key={donor.id}>
+                        User {donor.user_id} - ${donor.amount} - {donor.reward_tier || "No reward"}
+                    </li>
+                ))}
+            </ul>
 
             {user && (
                 <div>
