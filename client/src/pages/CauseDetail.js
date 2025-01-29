@@ -22,6 +22,17 @@ const CauseDetail = () => {
 
     if (!cause) return <p className="text-center mt-5">Loading...</p>;
 
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this cause?")) {
+            try {
+                await CauseService.deleteCause(id, user.token);
+                navigate("/");
+            } catch (err) {
+                console.error("Error deleting cause", err);
+            }
+        }
+    };
+
     return (
         <div className="container mt-5">
             <h2>{cause.title}</h2>
@@ -30,7 +41,10 @@ const CauseDetail = () => {
             <p><strong>Raised:</strong> ${cause.amount_raised}</p>
 
             {user && (user.id === cause.user_id || user.role === "admin") && (
-                <Link to={`/edit-cause/${id}`} className="btn btn-warning">Edit Cause</Link>
+                <>
+                    <Link to={`/edit-cause/${id}`} className="btn btn-warning">Edit Cause</Link>
+                    <button onClick={handleDelete} className="btn btn-danger ms-2">Delete</button>
+                </>
             )}
         </div>
     );
