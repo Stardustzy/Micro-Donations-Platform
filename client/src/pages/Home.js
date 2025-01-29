@@ -1,11 +1,15 @@
-import React from 'react';
+import React from "react";
 
-const Home = () => {
+function Home() {
   return (
-    <div>
-      <h1>Home Page</h1>
+    <div className="text-center mt-5">
+      <h1 className="text-primary">Welcome to the Micro-Donation Platform</h1>
+      <p className="lead">
+        Make small, impactful donations to support causes like education, healthcare, and environmental initiatives.
+      </p>
     </div>
   );
-};
+}
 
 export default Home;
+
