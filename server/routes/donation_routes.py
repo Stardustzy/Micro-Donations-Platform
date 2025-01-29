@@ -65,9 +65,10 @@ def make_donation():
 
     donation = Donation(user_id=user_id, cause_id=data["cause_id"], amount=data["amount"])
     db.session.add(donation)
+    donation.assign_reward()
     db.session.commit()
 
-    return jsonify({"message": "Donation successful"}), 201
+    return jsonify({"message": "Donation successful", "reward": donation.reward_tier}), 201
 
 @donation_blueprint.route("/donations/cause/<int:cause_id>", methods=["GET"])
 def get_donations_by_cause(cause_id):
