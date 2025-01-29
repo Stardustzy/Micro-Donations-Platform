@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
 import App from "./App";
+import AuthProvider from "./context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <BrowserRouter>
-    <AuthProvider>
+  <AuthProvider>
+    <BrowserRouter>
       <App />
-    </AuthProvider>
-  </BrowserRouter>
+    </BrowserRouter>
+  </AuthProvider>
 );

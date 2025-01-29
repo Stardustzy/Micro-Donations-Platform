@@ -30,11 +30,11 @@ const Navbar = () => {
                                 {user && (user.role === "recipient" || user.role === "admin") && (
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/create-cause">Create Cause</Link>
-                                    </li>
+                                    </li> 
                                 )}
-                                <li className="nav-item">
-                                    <button className="btn btn-danger ms-2" onClick={logout}>Logout</button>
-                                </li>
+                                    <li className="nav-item">
+                                        <button className="btn btn-danger ms-2" onClick={logout}>Logout</button>
+                                    </li>
                             </>
                         ) : (
                             <>
