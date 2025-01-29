@@ -2,6 +2,7 @@
 from flask import Blueprint, request, jsonify
 from server.app import db
 from server.models import Donation, Cause, User
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 
 donation_blueprint = Blueprint('donation', __name__, url_prefix='/donations')
@@ -22,7 +23,6 @@ def get_donation(id):
         return jsonify({'error': 'Donation not found'}), 404
 
     return jsonify(donation.to_dict()), 200
-
 
 @donation_blueprint.route('/', methods=['POST'])
 def create_donation():
@@ -54,6 +54,25 @@ def create_donation():
         db.session.rollback()
         return jsonify({'error': 'Database integrity error occurred'}), 500
 
+@donation_blueprint.route("/donations", methods=["POST"])
+@jwt_required()
+def make_donation():
+    data = request.get_json()
+    user_id = get_jwt_identity()
+
+    if not data.get("cause_id") or not data.get("amount"):
+        return jsonify({"error": "Cause ID and amount are required"}), 400
+
+    donation = Donation(user_id=user_id, cause_id=data["cause_id"], amount=data["amount"])
+    db.session.add(donation)
+    db.session.commit()
+
+    return jsonify({"message": "Donation successful"}), 201
+
+@donation_blueprint.route("/donations/cause/<int:cause_id>", methods=["GET"])
+def get_donations_by_cause(cause_id):
+    donations = Donation.query.filter_by(cause_id=cause_id).all()
+    return jsonify([{"id": d.id, "user_id": d.user_id, "amount": d.amount} for d in donations])
 
 @donation_blueprint.route('/<int:id>', methods=['PUT'])
 def update_donation(id):
