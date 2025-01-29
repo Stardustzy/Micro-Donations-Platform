@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { io } from "socket.io-client";
 import CauseService from "../services/CauseService";
 import DonationService from "../services/DonationService";
+
+const socket = io("http://localhost:5000");
 
 const CauseDetail = () => {
     const { id } = useParams();
@@ -38,6 +41,15 @@ const CauseDetail = () => {
             }
         };
         fetchDonations();
+
+        // Listen for new donations
+        socket.on("new_donation", (donation) => {
+            setDonors((prevDonors) => [...prevDonors, donation]);
+        });
+
+        return () => {
+            socket.off("new_donation");
+        };
     }, [id]);
 
     const handleDelete = async () => {
@@ -79,6 +91,15 @@ const CauseDetail = () => {
             <p><strong>Funding Goal:</strong> ${cause.funding_goal}</p>
             <p><strong>Total Raised:</strong> ${cause.amount_raised}</p>
             <p><strong>Total Donations:</strong> ${totalDonations}</p>
+
+            <h4>Live Donations</h4>
+            <ul>
+                {donors.map((donor, index) => (
+                    <li key={index}>
+                        User {donor.user_id} donated ${donor.amount} - {donor.reward || "No reward"}
+                    </li>
+                ))}
+            </ul>
 
             <h4>Donors & Rewards</h4>
             <ul>
