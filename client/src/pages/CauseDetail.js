@@ -10,6 +10,7 @@ const CauseDetail = () => {
     const [cause, setCause] = useState(null);
     const [donationAmount, setDonationAmount] = useState("");
     const [message, setMessage] = useState("");
+    const [totalDonations, setTotalDonations] = useState(0);
 
     useEffect(() => {
         const fetchCause = async () => {
@@ -24,6 +25,19 @@ const CauseDetail = () => {
     }, [id]);
 
     if (!cause) return <p className="text-center mt-5">Loading...</p>;
+
+    useEffect(() => {
+        const fetchDonations = async () => {
+            try {
+                const response = await DonationService.getDonationsByCause(id);
+                const total = response.data.reduce((sum, donation) => sum + donation.amount, 0);
+                setTotalDonations(total);
+            } catch (err) {
+                console.error("Error fetching donations", err);
+            }
+        };
+        fetchDonations();
+    }, [id]);
 
     const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete this cause?")) {
@@ -62,7 +76,8 @@ const CauseDetail = () => {
             <h2>{cause.title}</h2>
             <p>{cause.description}</p>
             <p><strong>Funding Goal:</strong> ${cause.funding_goal}</p>
-            <p><strong>Raised:</strong> ${cause.amount_raised}</p>
+            <p><strong>Total Raised:</strong> ${cause.amount_raised}</p>
+            <p><strong>Total Donations:</strong> ${totalDonations}</p>
 
             {user && (
                 <div>
