@@ -14,7 +14,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <AuthProvider>
-       <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -26,7 +25,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         </Routes>
-        </Router>
     </AuthProvider>
   );
 };
