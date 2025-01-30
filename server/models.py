@@ -28,13 +28,24 @@ class Cause(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    goal_amount = db.Column(db.Float, nullable=False)
+    funding_goal = db.Column(db.Float, nullable=False)
     raised_amount = db.Column(db.Float, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     active = db.Column(db.Boolean, default=True)
+    image_url = db.Column(db.String(255), nullable=True)
 
     # Relationships
     donations = relationship('Donation', back_populates='cause')
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "funding_goal": self.funding_goal,
+            "raised_amount": self.raised_amount,
+            "image_url": self.image_url,
+        }
 
     def __repr__(self):
         return f"<Cause {self.title}>"
