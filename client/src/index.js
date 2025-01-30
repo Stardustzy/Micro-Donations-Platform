@@ -5,6 +5,8 @@ import App from "./App";
 import AuthProvider from "./context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./styles/index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
