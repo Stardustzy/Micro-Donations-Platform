@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL + "/causes"; // Ensure .env has backend URL
+const API_URL = process.env.REACT_APP_API_URL + "/causes";
 
 const CauseService = {
   getAllCauses: async () => {
