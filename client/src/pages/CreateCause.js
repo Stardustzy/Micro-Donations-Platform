@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import CauseService from "../services/CauseService";
+//import CauseService from "../services/CauseService";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -9,6 +9,34 @@ const CreateCause = () => {
   const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    
+    if (!file) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+    const data = await response.json();
+    if (response.ok && data.image_url) {
+      setImageUrl(data.image_url);
+    } else {
+      setError(data.error || "Image upload failed");
+    }
+  } catch (error) {
+    setError("Failed to upload image. Try again.");
+  }
+};
 
   //if (!user || (user.role !== "recipient" && user.role !== "admin")) {
   //return <p className="text-center mt-5">You are not authorized to create a cause.</p>;
@@ -21,13 +49,37 @@ const CreateCause = () => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    setError(null);
+    
+    const causeData = {
+      title: values.title,
+      description: values.description,
+      funding_goal: values.funding_goal,
+      image_url: imageUrl,
+    };
+
     try {
-      await CauseService.createCause(values, token);
-      navigate("/");
-    } catch (err) {
-      setError("Failed to create cause. Please try again.");
+      const response = await fetch("http://localhost:5000/api/causes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(causeData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Cause created successfully!");
+        navigate("/causes");
+      } else {
+        setError(data.error || "Failed to create cause");
+      }
+    } catch (error) {
+      setError("Something went wrong. Try again.");
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   return (
@@ -80,6 +132,13 @@ const CreateCause = () => {
                   <label className="form-label">Funding Goal ($)</label>
                   <Field type="number" name="funding_goal" className="form-control" />
                   <ErrorMessage name="funding_goal" component="div" className="text-danger" />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Upload Image</label>
+                  <Field type="file" name="image_url" className="form-control" onChange={handleImageUpload} />
+                  {imageUrl && <img src={imageUrl} alt="Preview" className="img-fluid mb-3" />}
+                  <ErrorMessage name="image_url" component="div" className="text-danger" />
                 </div>
 
                 <button type="submit" className="btn btn-primary mt-3" disabled={isSubmitting}>
