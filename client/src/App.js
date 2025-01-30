@@ -7,6 +7,7 @@ import EditCause from "./pages/EditCause";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/NavBar";
+import Footer from "./components/Footer";
 import Dashboard from "./pages/Dashboard"; // Private page
 import AuthProvider from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -25,6 +26,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         </Routes>
+        <Footer />
     </AuthProvider>
   );
 };
