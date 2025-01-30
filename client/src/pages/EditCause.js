@@ -24,9 +24,9 @@ const EditCause = () => {
         fetchCause();
     }, [id]);
 
-    if (!user || (cause && cause.user_id !== user.id && user.role !== "admin")) {
-        return <p className="text-center mt-5">You are not authorized to edit this cause.</p>;
-    }
+    //if (!user || (cause && cause.user_id !== user.id && user.role !== "admin")) {
+        //return <p className="text-center mt-5">You are not authorized to edit this cause.</p>;
+    //S}
 
     const validationSchema = Yup.object({
         title: Yup.string().required("Title is required"),

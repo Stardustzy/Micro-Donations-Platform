@@ -7,7 +7,7 @@ import DonationService from "../services/DonationService";
 
 const socket = io("http://localhost:5000");
 
-const CauseDetail = () => {
+const Causes = () => {
     const { id } = useParams();
     const { user } = useContext(AuthContext);
     const [cause, setCause] = useState(null);
@@ -136,4 +136,4 @@ const CauseDetail = () => {
     );
 };
 
-export default CauseDetail;
+export default Causes;

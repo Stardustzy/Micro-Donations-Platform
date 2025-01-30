@@ -10,9 +10,9 @@ const CreateCause = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 
-  if (!user || (user.role !== "recipient" && user.role !== "admin")) {
-    return <p className="text-center mt-5">You are not authorized to create a cause.</p>;
-  }
+  //if (!user || (user.role !== "recipient" && user.role !== "admin")) {
+    //return <p className="text-center mt-5">You are not authorized to create a cause.</p>;
+  //}
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required"),

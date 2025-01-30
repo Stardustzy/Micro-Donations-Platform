@@ -27,11 +27,10 @@ const Navbar = () => {
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/dashboard">Dashboard</Link>
                                 </li>
-                                {user && (user.role === "recipient" || user.role === "admin") && (
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/create-cause">Create Cause</Link>
                                     </li> 
-                                )}
+                                
                                     <li className="nav-item">
                                         <button className="btn btn-danger ms-2" onClick={logout}>Logout</button>
                                     </li>
@@ -42,10 +41,10 @@ const Navbar = () => {
                                     <Link className="nav-link" to="/">Home</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/donate">Donate</Link>
+                                    <Link className="nav-link" to="/create-cause">Create Cause</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/login">Login</Link>
+                                    <Link className="nav-link" to="/causes">Causes</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/register">Register</Link>
