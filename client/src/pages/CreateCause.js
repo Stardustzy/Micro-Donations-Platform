@@ -11,7 +11,7 @@ const CreateCause = () => {
   const [error, setError] = useState(null);
 
   //if (!user || (user.role !== "recipient" && user.role !== "admin")) {
-    //return <p className="text-center mt-5">You are not authorized to create a cause.</p>;
+  //return <p className="text-center mt-5">You are not authorized to create a cause.</p>;
   //}
 
   const validationSchema = Yup.object({
@@ -32,39 +32,64 @@ const CreateCause = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Create a New Cause</h2>
+      <h2 className="text-center mb-4">Create a New Cause</h2>
+
+      {/* Warning Card */}
       {!user && (
-        <div className="alert alert-warning">
-          Creating an account allows you to track your causes and earn rewards as a donor.
-          <br /> <a href="/register">Register here</a> or <a href="/login">Login</a>.
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card border-warning shadow-sm">
+              <div className="card-body text-center">
+                <h5 className="card-title text-warning">⚠ Attention!</h5>
+                <p className="card-text">
+                  Creating an account allows you to track your causes and earn rewards as a donor.
+                </p>
+                <a href="/register" className="btn btn-warning me-2">Register Here</a>
+                <a href="/login" className="btn btn-outline-warning">Login</a>
+              </div>
+            </div>
+          </div>
         </div>
       )}
+
       {error && <p className="text-danger">{error}</p>}
-      <Formik
-        initialValues={{ title: "", description: "", funding_goal: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form className="form-group">
-            <label>Title</label>
-            <Field type="text" name="title" className="form-control" />
-            <ErrorMessage name="title" component="div" className="text-danger" />
 
-            <label>Description</label>
-            <Field as="textarea" name="description" className="form-control" />
-            <ErrorMessage name="description" component="div" className="text-danger" />
+      {/* Form */}
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <Formik
+            initialValues={{ title: "", description: "", funding_goal: "" }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting }) => (
+              <Form className="form-group card p-4 shadow-sm">
+                <div className="mb-3">
+                  <label className="form-label">Title</label>
+                  <Field type="text" name="title" className="form-control" />
+                  <ErrorMessage name="title" component="div" className="text-danger" />
+                </div>
 
-            <label>Funding Goal ($)</label>
-            <Field type="number" name="funding_goal" className="form-control" />
-            <ErrorMessage name="funding_goal" component="div" className="text-danger" />
+                <div className="mb-3">
+                  <label className="form-label">Description</label>
+                  <Field as="textarea" name="description" className="form-control" />
+                  <ErrorMessage name="description" component="div" className="text-danger" />
+                </div>
 
-            <button type="submit" className="btn btn-primary mt-3" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Cause"}
-            </button>
-          </Form>
-        )}
-      </Formik>
+                <div className="mb-3">
+                  <label className="form-label">Funding Goal ($)</label>
+                  <Field type="number" name="funding_goal" className="form-control" />
+                  <ErrorMessage name="funding_goal" component="div" className="text-danger" />
+                </div>
+
+                <button type="submit" className="btn btn-primary mt-3" disabled={isSubmitting}>
+                  {isSubmitting ? "Creating..." : "Create Cause"}
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
     </div>
   );
 };
