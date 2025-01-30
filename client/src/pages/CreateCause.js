@@ -33,6 +33,12 @@ const CreateCause = () => {
   return (
     <div className="container mt-5">
       <h2>Create a New Cause</h2>
+      {!user && (
+        <div className="alert alert-warning">
+          Creating an account allows you to track your causes and earn rewards as a donor.
+          <br /> <a href="/register">Register here</a> or <a href="/login">Login</a>.
+        </div>
+      )}
       {error && <p className="text-danger">{error}</p>}
       <Formik
         initialValues={{ title: "", description: "", funding_goal: "" }}
