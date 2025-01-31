@@ -22,7 +22,7 @@ const CreateCause = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:5000/upload", {
+      const response = await fetch("https://micro-donation-platform.onrender.com/api/upload", {
         method: "POST",
         body: formData,
       });
@@ -59,7 +59,7 @@ const CreateCause = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/causes", {
+      const response = await fetch("https://micro-donation-platform.onrender.com/api/causes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

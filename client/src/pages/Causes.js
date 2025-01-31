@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import CauseService from "../services/CauseService";
 import DonationService from "../services/DonationService";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://micro-donation-platform.onrender.com");
 
 const Causes = () => {
     const { id } = useParams();
