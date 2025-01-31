@@ -52,6 +52,7 @@ urllib3 = "==1.25.11"
 virtualenv = "==20.26.4"
 werkzeug = "==3.0.6"
 zipp = "==3.20.2"
+flask-socketio = "*"
 
 [dev-packages]
 
