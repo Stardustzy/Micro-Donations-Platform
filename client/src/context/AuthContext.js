@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkUserSession = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:5000/api/user", {
+                const response = await axios.get("https://micro-donation-platform.onrender.com/api/user", {
                     withCredentials: true,
                 });
                 if (response.data.user) {
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/login", credentials, {
+            const response = await axios.post("https://micro-donation-platform.onrender.com/api/login", credentials, {
                 withCredentials: true,
             });
             setUser(response.data.user);
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-          await axios.post("http://127.0.0.1:5000/api/register", userData);
+          await axios.post("https://micro-donation-platform.onrender.com/api/register", userData);
           return { success: true };
         } catch (error) {
           return { success: false, message: error.response?.data?.message || "Registration failed" };
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
     
       const logout = async () => {
         try {
-          await axios.post("http://127.0.0.1:5000/api/logout", {}, { withCredentials: true });
+          await axios.post("https://micro-donation-platform.onrender.com/api/logout", {}, { withCredentials: true });
           setUser(null);
         } catch (error) {
           console.log("Logout failed");

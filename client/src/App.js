@@ -18,7 +18,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/causes/:causeId" element={<Causes />} />
+          <Route path="/causes" element={<Causes />} />
           <Route path="/create-cause" element={<CreateCause />} />
           <Route path="/edit-cause/:id" element={<EditCause />} />
           <Route path="/login" element={<Login />} />

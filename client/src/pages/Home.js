@@ -6,9 +6,9 @@ const Home = () => {
   const [causes, setCauses] = useState([]);
 
   useEffect(() => {
-    CauseService.getAllCauses()
+    CauseService.getFeaturedCauses()
       .then((data) => setCauses(data))
-      .catch((error) => console.error("Error fetching causes:", error));
+      .catch((error) => console.error("Error fetching featured causes:", error));
   }, []);
 
   return (

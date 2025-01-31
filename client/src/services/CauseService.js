@@ -8,6 +8,11 @@ const CauseService = {
     return response.data;
   },
 
+  getFeaturedCauses: async () => {
+    const response = await axios.get(API_URL + "/featured");
+    return response.data;
+  }, 
+
   getCauseById: async (id) => {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
