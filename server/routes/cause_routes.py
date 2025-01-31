@@ -33,6 +33,16 @@ def get_cause(id):
 
     return jsonify(cause.to_dict()), 200
 
+@cause_blueprint.route("/api/causes/featured", methods=["GET"])
+def get_featured_causes():
+    categories = db.session.query(Cause.category).distinct().all()
+    featured_causes = []
+    for category in categories:
+        cause = Cause.query.filter_by(category=category[0]).first()
+        if cause:
+            featured_causes.append(cause)
+    return jsonify([cause.to_dict() for cause in featured_causes])
+
 
 @cause_blueprint.route('/', methods=['POST'])
 def create_cause():
