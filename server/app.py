@@ -4,9 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_socketio import SocketIO
-from server.config import configurations
+from config import configurations
 from flask_bcrypt import Bcrypt
-from server.models import db
+from models import db
 
 migrate = Migrate()
 bcrypt = Bcrypt()
