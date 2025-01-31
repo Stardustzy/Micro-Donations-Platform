@@ -4,14 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_socketio import SocketIO
+import eventlet
 from config import configurations
 from flask_bcrypt import Bcrypt
 from models import db
 
 migrate = Migrate()
 bcrypt = Bcrypt()
-
-socketio = SocketIO(cors_allowed_origins="*")  # Initialize globally
+socketio = SocketIO(async_mode="eventlet", cors_allowed_origins="*")
 
 def create_app():
     """
@@ -33,10 +33,10 @@ def create_app():
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     # Import and register Blueprints here to avoid circular imports
-    from server.routes.auth_routes import auth_blueprint
-    from server.routes.cause_routes import cause_blueprint
-    from server.routes.donation_routes import donation_blueprint
-    from server.routes.reward_routes import reward_blueprint
+    from routes.auth_routes import auth_blueprint
+    from routes.cause_routes import cause_blueprint
+    from routes.donation_routes import donation_blueprint
+    from routes.reward_routes import reward_blueprint
 
     # Register Blueprints for modularized routing
     app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
@@ -54,4 +54,7 @@ def create_app():
 
     return app
 
-app = create_app()
+
+if __name__ == "__main__":
+    app = create_app() 
+    socketio.run(app, host="0.0.0.0", port=5000)

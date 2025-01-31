@@ -1,5 +1,5 @@
-from server.app import db
-from server.models import User, Reward, UserReward
+from app import db
+from models import User, Reward, UserReward
 
 class RewardService:
     @staticmethod
