@@ -20,8 +20,7 @@ const Causes = () => {
                 const data = await CauseService.getAllCauses();
                 setCauses(data);
                 setFilteredCauses(data);
-                const uniqueCategories = [...new Set(data.map(cause => cause.category))];
-                setCategories(uniqueCategories);
+                setCategories([...new Set(data.map(cause => cause.category))]);
             } catch (err) {
                 console.error("Error fetching causes", err);
             }
@@ -68,7 +67,13 @@ const Causes = () => {
 
     return (
         <div className="container">
-            <h2 className="text-center my-4">All Causes</h2>
+            {/* Header Section */}
+            <header className="text-center my-4">
+                <h2>Support a Cause, Make a Difference</h2>
+                <p>Explore various causes and contribute to impactful initiatives in education, healthcare, and environmental sustainability.</p>
+            </header>
+
+            {/* Search and Filter */}
             <div className="mb-3">
                 <label>Search</label>
                 <select className="form-select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
@@ -84,10 +89,12 @@ const Causes = () => {
                 />
                 <button onClick={handleSearch} className="btn btn-primary mt-2">Search</button>
             </div>
-            <div className="row">
+
+            {/* Causes List */}
+            <section className="row">
                 {filteredCauses.length > 0 ? (
                     filteredCauses.map(cause => (
-                        <div key={cause.id} className="col-md-4">
+                        <div key={cause.id} className="col-md-4 col-sm-6">
                             <div className="card mb-4">
                                 <img src={cause.image_url} className="card-img-top" alt={cause.title} />
                                 <div className="card-body">
@@ -105,7 +112,38 @@ const Causes = () => {
                 ) : (
                     <p className="text-center">No causes available.</p>
                 )}
-            </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="text-center my-4">
+                <h3>Your Contribution Matters</h3>
+                <p>Browse through various causes and make a donation today! Even the smallest amounts drive change.</p>
+                <Link to="/donate" className="btn btn-primary">Donate Now</Link>
+            </section>
+
+            {/* FAQ Section */}
+            <section className="my-4">
+                <h3>Frequently Asked Questions</h3>
+                <div className="accordion" id="faqAccordion">
+                    {[
+                        { question: "How do I donate to a cause?", answer: "You can donate by clicking the 'Donate' button on any cause and following the instructions." },
+                        { question: "Can I track my donation’s impact?", answer: "Yes! We provide updates on how your donations are being used." },
+                        { question: "How do I submit a new cause?", answer: "You can submit a new cause by contacting us through the 'Contact' page." },
+                        { question: "Are my donations secure?", answer: "Absolutely! We use secure payment gateways to ensure your transactions are safe." }
+                    ].map((faq, index) => (
+                        <div className="accordion-item" key={index}>
+                            <h2 className="accordion-header" id={`heading${index}`}>
+                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${index}`}>
+                                    {faq.question}
+                                </button>
+                            </h2>
+                            <div id={`collapse${index}`} className="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div className="accordion-body">{faq.answer}</div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
         </div>
     );
 };
