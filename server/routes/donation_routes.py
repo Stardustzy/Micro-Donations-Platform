@@ -1,7 +1,7 @@
 # server/routes/donation_routes.py
 from flask import Blueprint, request, jsonify
-from app import db, socketio
-from models import Donation, Cause, User
+from app import socketio
+from models import db, Donation, Cause, User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 

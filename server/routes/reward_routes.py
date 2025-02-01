@@ -1,7 +1,6 @@
 # server/routes/reward_routes.py
 from flask import Blueprint, request, jsonify
-from app import db
-from models import Reward, UserReward, User
+from models import db, Reward, UserReward, User
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 

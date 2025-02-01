@@ -1,17 +1,19 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_socketio import SocketIO
-import eventlet
 from config import configurations
 from flask_bcrypt import Bcrypt
 from models import db
 
+import eventlet
+eventlet.monkey_patch()
+
 migrate = Migrate()
 bcrypt = Bcrypt()
 socketio = SocketIO(async_mode="eventlet", cors_allowed_origins="*")
+
 
 def create_app():
     """
@@ -32,7 +34,7 @@ def create_app():
     # Enable CORS
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-    # Import and register Blueprints here to avoid circular imports
+    # Import and register Blueprints here 
     from routes.auth_routes import auth_blueprint
     from routes.cause_routes import cause_blueprint
     from routes.donation_routes import donation_blueprint

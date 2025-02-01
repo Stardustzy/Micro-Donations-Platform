@@ -2,8 +2,7 @@
 import os
 from flask import Blueprint, request, jsonify, current_app, send_from_directory
 from werkzeug.utils import secure_filename
-from app import db
-from models import Cause
+from models import db, Cause
 
 cause_blueprint = Blueprint('cause', __name__, url_prefix='/causes')
 UPLOAD_FOLDER = "uploads"

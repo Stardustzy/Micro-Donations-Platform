@@ -27,13 +27,9 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     """Configuration for production."""
     DEBUG = False
-    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    INSTANCE_DIR = os.path.join(BASE_DIR, 'instance')
-    if not os.path.exists(INSTANCE_DIR):
-        os.makedirs(INSTANCE_DIR)
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', f"sqlite:///{os.path.join(INSTANCE_DIR, 'micro_donation.db')}")
-    if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
-        SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://")
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL',
+        f"postgresql://micro_donation_user:password@localhost/micro_donation"
+    )
 
 # Dictionary to map environment names to configuration classes.
 configurations = {
