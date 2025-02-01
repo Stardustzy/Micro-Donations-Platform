@@ -115,10 +115,13 @@ const Causes = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="text-center my-4">
-                <h3>Your Contribution Matters</h3>
-                <p>Browse through various causes and make a donation today! Even the smallest amounts drive change.</p>
-                <Link to="/donate" className="btn btn-primary">Donate Now</Link>
+            <section className="my-4">
+                <div className="card text-center p-4 shadow-lg border-0">
+                    <div className="card-body">
+                        <h3 className="card-title">Your Contribution Matters</h3>
+                        <p className="card-text">Browse through various causes and make a donation today! Even the smallest amounts drive change.</p>
+                    </div>
+                </div>
             </section>
 
             {/* FAQ Section */}
