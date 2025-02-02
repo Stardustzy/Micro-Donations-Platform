@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CauseService from "../services/CauseService";
 import { Link } from "react-router-dom";
+import { useSpring, animated } from "react-spring";
 
 const Home = () => {
   const [causes, setCauses] = useState([]);
