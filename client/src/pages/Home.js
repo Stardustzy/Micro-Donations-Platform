@@ -18,9 +18,9 @@ const Home = () => {
       <motion.section
         className="hero text-center text-white py-5"
         style={{ background: "#007bff", color: "white" }}
-        initial={{ opacity: 0, y: 20 }} // Initial animation state
-        animate={{ opacity: 1, y: 0 }} // Animation to apply
-        transition={{ delay: 0.2 }} // Delay before animation starts
+        initial={{ opacity: 0, y: 20 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ delay: 0.2 }} 
       >
         <div className="container">
           <h1 className="display-4">Empower Change with Micro-Donations</h1>
@@ -62,10 +62,10 @@ const Home = () => {
             <motion.div
               key={cause.id}
               className="col-md-4"
-              initial={{ opacity: 0, y: 20 }} // Initial animation state
-              whileInView={{ opacity: 1, y: 0 }} // Animation when in view
-              transition={{ delay: 0.2 }} // Delay before animation starts
-              viewport={{ once: true }} // Only animate once
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.2 }} 
+              viewport={{ once: true }} 
             >
               <div className="card mb-4 shadow-sm">
                 {cause.image_url && (
@@ -100,10 +100,10 @@ const Home = () => {
       <motion.section
         className="text-center py-5"
         style={{ background: "#f8f9fa" }}
-        initial={{ opacity: 0, y: 20 }} // Initial animation state
-        whileInView={{ opacity: 1, y: 0 }} // Animation when in view
-        transition={{ delay: 0.4 }} // Delay before animation starts
-        viewport={{ once: true }} // Only animate once
+        initial={{ opacity: 0, y: 20 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        transition={{ delay: 0.4 }} 
+        viewport={{ once: true }} 
       >
         <div className="container">
           <h2 className="mb-4">Our Impact</h2>
@@ -145,10 +145,10 @@ const Home = () => {
             <motion.div
               key={index}
               className="col-md-4"
-              initial={{ opacity: 0, y: 20 }} // Initial animation state
-              whileInView={{ opacity: 1, y: 0 }} // Animation when in view
-              transition={{ delay: 0.2 * index }} // Delay before animation starts
-              viewport={{ once: true }} // Only animate once
+              initial={{ opacity: 0, y: 20 }} 
+              whileInView={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.2 * index }} 
+              viewport={{ once: true }} 
             >
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
@@ -185,10 +185,10 @@ const Home = () => {
             <motion.div
               key={index}
               className="col-md-4"
-              initial={{ opacity: 0, y: 20 }} // Initial animation state
-              whileInView={{ opacity: 1, y: 0 }} // Animation when in view
-              transition={{ delay: 0.2 * index }} // Delay before animation starts
-              viewport={{ once: true }} // Only animate once
+              initial={{ opacity: 0, y: 20 }} 
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 * index }} 
+              viewport={{ once: true }} 
             >
               <div className="card mb-4 shadow-sm">
                 <img src={news.image} className="card-img-top" alt={news.title} />
@@ -202,18 +202,6 @@ const Home = () => {
               </div>
             </motion.div>
           ))}
-        </div>
-      </section>
-
-      {/* Video Section */}
-      <section className="container my-5">
-        <div className="embed-responsive embed-responsive-16by9">
-          <iframe
-            className="embed-responsive-item"
-            src="https://www.youtube.com/embed/your-video-id"
-            title="Platform Overview"
-            allowFullScreen
-          ></iframe>
         </div>
       </section>
 
