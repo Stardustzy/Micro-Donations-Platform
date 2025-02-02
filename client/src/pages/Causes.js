@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
 import CauseService from "../services/CauseService";
-
-const socket = io("https://micro-donation-platform.onrender.com", { transports: ["websocket"] });
 
 const Causes = () => {
     const [causes, setCauses] = useState(null);
@@ -26,18 +23,6 @@ const Causes = () => {
             }
         };
         fetchCauses();
-    }, []);
-
-    useEffect(() => {
-        socket.on("new_donation", (donation) => {
-            setDonations((prevDonations) => ({
-                ...prevDonations,
-                [donation.cause_id]: (prevDonations[donation.cause_id] || 0) + donation.amount,
-            }));
-        });
-        return () => {
-            socket.off("new_donation");
-        };
     }, []);
 
     const handleSearch = () => {
