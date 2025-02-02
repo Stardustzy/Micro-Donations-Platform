@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CauseService from "../services/CauseService";
 import { Link } from "react-router-dom";
-import { useSpring, animated } from "react-spring";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const [causes, setCauses] = useState([]);
@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <animated.section
+      <motion.section
         className="hero text-center text-white py-5"
         style={{ background: "#007bff", color: "white", ...heroAnimation }}
       >
@@ -42,7 +42,7 @@ const Home = () => {
             Start Donating
           </Link>
         </div>
-      </animated.section>
+      </motion.section>
 
       {/* Features Section */}
       <section className="container my-5">
@@ -99,7 +99,7 @@ const Home = () => {
       </section>
 
       {/* Statistics Section */}
-      <animated.section
+      <motion.section
         className="text-center py-5"
         style={{ background: "#f8f9fa", ...statsAnimation }}
       >
@@ -120,7 +120,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </animated.section>
+      </motion.section>
 
       {/* Testimonials Section */}
       <section className="container my-5">
