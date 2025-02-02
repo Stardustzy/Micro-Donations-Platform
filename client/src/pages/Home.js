@@ -12,26 +12,15 @@ const Home = () => {
       .catch((error) => console.error("Error fetching featured causes:", error));
   }, []);
 
-  // Animation for the hero section
-  const heroAnimation = useSpring({
-    from: { opacity: 0, transform: "translateY(20px)" },
-    to: { opacity: 1, transform: "translateY(0)" },
-    delay: 200,
-  });
-
-  // Animation for the statistics section
-  const statsAnimation = useSpring({
-    from: { opacity: 0, transform: "translateY(20px)" },
-    to: { opacity: 1, transform: "translateY(0)" },
-    delay: 400,
-  });
-
   return (
     <div>
       {/* Hero Section */}
       <motion.section
         className="hero text-center text-white py-5"
-        style={{ background: "#007bff", color: "white", ...heroAnimation }}
+        style={{ background: "#007bff", color: "white" }}
+        initial={{ opacity: 0, y: 20 }} // Initial animation state
+        animate={{ opacity: 1, y: 0 }} // Animation to apply
+        transition={{ delay: 0.2 }} // Delay before animation starts
       >
         <div className="container">
           <h1 className="display-4">Empower Change with Micro-Donations</h1>
@@ -70,9 +59,18 @@ const Home = () => {
         <h2 className="text-center mb-4">Explore Causes</h2>
         <div className="row">
           {causes.map((cause) => (
-            <div key={cause.id} className="col-md-4">
+            <motion.div
+              key={cause.id}
+              className="col-md-4"
+              initial={{ opacity: 0, y: 20 }} // Initial animation state
+              whileInView={{ opacity: 1, y: 0 }} // Animation when in view
+              transition={{ delay: 0.2 }} // Delay before animation starts
+              viewport={{ once: true }} // Only animate once
+            >
               <div className="card mb-4 shadow-sm">
-                {cause.image_url && <img src={cause.image_url} className="card-img-top" alt={cause.title} />}
+                {cause.image_url && (
+                  <img src={cause.image_url} className="card-img-top" alt={cause.title} />
+                )}
                 <div className="card-body">
                   <h5 className="card-title">{cause.title}</h5>
                   <p className="card-text">{cause.description}</p>
@@ -93,7 +91,7 @@ const Home = () => {
                   <Link to={`/causes/${cause.id}`} className="btn btn-primary">View Cause</Link>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -101,7 +99,11 @@ const Home = () => {
       {/* Statistics Section */}
       <motion.section
         className="text-center py-5"
-        style={{ background: "#f8f9fa", ...statsAnimation }}
+        style={{ background: "#f8f9fa" }}
+        initial={{ opacity: 0, y: 20 }} // Initial animation state
+        whileInView={{ opacity: 1, y: 0 }} // Animation when in view
+        transition={{ delay: 0.4 }} // Delay before animation starts
+        viewport={{ once: true }} // Only animate once
       >
         <div className="container">
           <h2 className="mb-4">Our Impact</h2>
@@ -126,36 +128,36 @@ const Home = () => {
       <section className="container my-5">
         <h2 className="text-center mb-4">What People Are Saying</h2>
         <div className="row">
-          <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
-              <div className="card-body">
-                <p className="card-text">
-                  "This platform has made it so easy to support causes I care about. Highly recommend!"
-                </p>
-                <p className="text-muted">- Jane Doe, Donor</p>
+          {[
+            {
+              text: "This platform has made it so easy to support causes I care about. Highly recommend!",
+              author: "Jane Doe, Donor",
+            },
+            {
+              text: "Thanks to the generous donors, we were able to fund our education initiative.",
+              author: "John Smith, Recipient",
+            },
+            {
+              text: "A transparent and impactful way to make a difference in the world.",
+              author: "Sarah Lee, Partner",
+            },
+          ].map((testimonial, index) => (
+            <motion.div
+              key={index}
+              className="col-md-4"
+              initial={{ opacity: 0, y: 20 }} // Initial animation state
+              whileInView={{ opacity: 1, y: 0 }} // Animation when in view
+              transition={{ delay: 0.2 * index }} // Delay before animation starts
+              viewport={{ once: true }} // Only animate once
+            >
+              <div className="card mb-4 shadow-sm">
+                <div className="card-body">
+                  <p className="card-text">{testimonial.text}</p>
+                  <p className="text-muted">- {testimonial.author}</p>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
-              <div className="card-body">
-                <p className="card-text">
-                  "Thanks to the generous donors, we were able to fund our education initiative."
-                </p>
-                <p className="text-muted">- John Smith, Recipient</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
-              <div className="card-body">
-                <p className="card-text">
-                  "A transparent and impactful way to make a difference in the world."
-                </p>
-                <p className="text-muted">- Sarah Lee, Partner</p>
-              </div>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -163,48 +165,43 @@ const Home = () => {
       <section className="container my-5">
         <h2 className="text-center mb-4">Latest News</h2>
         <div className="row">
-          <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
-              <img src="https://via.placeholder.com/300" className="card-img-top" alt="News 1" />
-              <div className="card-body">
-                <h5 className="card-title">New Education Initiative Launched</h5>
-                <p className="card-text">
-                  Learn how our latest project is helping underprivileged children access quality education.
-                </p>
-                <a href="#" className="btn btn-primary">
-                  Read More
-                </a>
+          {[
+            {
+              image: "https://via.placeholder.com/300",
+              title: "New Education Initiative Launched",
+              text: "Learn how our latest project is helping underprivileged children access quality education.",
+            },
+            {
+              image: "https://via.placeholder.com/300",
+              title: "Donor Spotlight: Jane Doe",
+              text: "Meet Jane, one of our top donors, and learn why she supports our platform.",
+            },
+            {
+              image: "https://via.placeholder.com/300",
+              title: "Environmental Cause Success",
+              text: "See how donations helped plant 10,000 trees in deforested areas.",
+            },
+          ].map((news, index) => (
+            <motion.div
+              key={index}
+              className="col-md-4"
+              initial={{ opacity: 0, y: 20 }} // Initial animation state
+              whileInView={{ opacity: 1, y: 0 }} // Animation when in view
+              transition={{ delay: 0.2 * index }} // Delay before animation starts
+              viewport={{ once: true }} // Only animate once
+            >
+              <div className="card mb-4 shadow-sm">
+                <img src={news.image} className="card-img-top" alt={news.title} />
+                <div className="card-body">
+                  <h5 className="card-title">{news.title}</h5>
+                  <p className="card-text">{news.text}</p>
+                  <a href="#" className="btn btn-primary">
+                    Read More
+                  </a>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
-              <img src="https://via.placeholder.com/300" className="card-img-top" alt="News 2" />
-              <div className="card-body">
-                <h5 className="card-title">Donor Spotlight: Jane Doe</h5>
-                <p className="card-text">
-                  Meet Jane, one of our top donors, and learn why she supports our platform.
-                </p>
-                <a href="#" className="btn btn-primary">
-                  Read More
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
-              <img src="https://via.placeholder.com/300" className="card-img-top" alt="News 3" />
-              <div className="card-body">
-                <h5 className="card-title">Environmental Cause Success</h5>
-                <p className="card-text">
-                  See how donations helped plant 10,000 trees in deforested areas.
-                </p>
-                <a href="#" className="btn btn-primary">
-                  Read More
-                </a>
-              </div>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
