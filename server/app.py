@@ -2,18 +2,12 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 from flask_cors import CORS
-from flask_socketio import SocketIO
 from config import configurations
 from flask_bcrypt import Bcrypt
 from models import db
 
-import eventlet
-eventlet.monkey_patch()
-
 migrate = Migrate()
 bcrypt = Bcrypt()
-socketio = SocketIO(async_mode="eventlet", cors_allowed_origins="*")
-
 
 def create_app():
     """
@@ -29,7 +23,6 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
-    socketio.init_app(app)  # Initialize SocketIO with app
 
     # Enable CORS
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
@@ -55,8 +48,3 @@ def create_app():
         }
 
     return app
-
-
-if __name__ == "__main__":
-    app = create_app() 
-    socketio.run(app, host="0.0.0.0", port=5000)

@@ -1,6 +1,7 @@
 #server/routes/auth_routes.py
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
 from models import db, User
 
 auth_blueprint = Blueprint('auth', __name__, url_prefix='/auth')
@@ -35,7 +36,8 @@ def login():
 
     user = User.query.filter_by(email=data['email']).first()
     if user and check_password_hash(user.password_hash, data['password']):
-        return jsonify({'message': f'Welcome back, {user.username}!'}), 200
+        access_token = create_access_token(identity=user.id)
+        return jsonify({'message': f'Welcome back, {user.username}!', 'token': access_token}), 200
 
     return jsonify({'error': 'Invalid credentials'}), 401
 

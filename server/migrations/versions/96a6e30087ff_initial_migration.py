@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 394326ebde2c
+Revision ID: 96a6e30087ff
 Revises: 
-Create Date: 2025-01-27 23:57:14.448080
+Create Date: 2025-02-03 15:47:18.591331
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '394326ebde2c'
+revision = '96a6e30087ff'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,10 +22,11 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
-    sa.Column('goal_amount', sa.Float(), nullable=False),
+    sa.Column('funding_goal', sa.Float(), nullable=False),
     sa.Column('raised_amount', sa.Float(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('active', sa.Boolean(), nullable=True),
+    sa.Column('image_url', sa.String(length=255), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('rewards',
@@ -51,6 +52,8 @@ def upgrade():
     sa.Column('donated_at', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('cause_id', sa.Integer(), nullable=False),
+    sa.Column('message', sa.Text(), nullable=True),
+    sa.Column('reward_tier', sa.String(length=50), nullable=True),
     sa.ForeignKeyConstraint(['cause_id'], ['causes.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

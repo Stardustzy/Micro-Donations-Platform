@@ -1,6 +1,5 @@
 # server/routes/donation_routes.py
 from flask import Blueprint, request, jsonify
-from app import socketio
 from models import db, Donation, Cause, User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
@@ -25,45 +24,31 @@ def get_donation(id):
     return jsonify(donation.to_dict()), 200
 
 @donation_blueprint.route('/', methods=['POST'])
+@jwt_required
 def make_donation():
     """Create a new donation."""
     data = request.get_json()
     user_id = get_jwt_identity()
 
-    if not data or 'amount' not in data or 'cause_id' not in data or 'user_id' not in data:
+    if not data or 'amount' not in data or 'cause_id' not in data:
         return jsonify({'error': 'Invalid data'}), 400
 
-    try:
-        # Validate cause and user existence
-        cause = Cause.query.get(data['cause_id'])
-        user = User.query.get(data['user_id'])
+    cause = Cause.query.get(data['cause_id'])
 
-        if not cause or not user:
-            return jsonify({'error': 'Invalid cause_id or user_id'}), 404
+    if not cause:
+        return jsonify({'error': 'Cause not found'}), 404
 
-        new_donation = Donation(
-            amount=data['amount'],
-            message=data.get('message', ''),
-            cause_id=data['cause_id'],
-            user_id=data['user_id']
-        )
-        db.session.add(new_donation)
-        new_donation.assign_reward()
-        db.session.commit()
+    new_donation = Donation(
+        amount=data['amount'],
+        message=data.get('message', ''),
+        cause_id=data['cause_id'],
+        user_id=user_id
+    )
+    db.session.add(new_donation)
+    new_donation.assign_reward()
+    db.session.commit()
 
-        # Emit event to update frontend in real-time
-        socketio.emit("new_donation", {
-            "donation_id": new_donation.id,
-            "user_id": user_id,
-            "cause_id": data["cause_id"],
-            "amount": data["amount"],
-            "reward": new_donation.reward_tier
-        }, broadcast=True)
-
-        return jsonify({'message': 'Donation created successfully', 'reward': new_donation.reward_tier, 'donation': new_donation.to_dict()}), 201
-    except IntegrityError:
-        db.session.rollback()
-        return jsonify({'error': 'Database integrity error occurred'}), 500
+    return jsonify({'message': 'Donation created successfully', 'reward': new_donation.reward_tier, 'donation': new_donation.to_dict()}), 201
 
 @donation_blueprint.route("/donations/cause/<int:cause_id>", methods=["GET"])
 def get_donations_by_cause(cause_id):

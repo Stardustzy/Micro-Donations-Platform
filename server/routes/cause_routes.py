@@ -32,7 +32,7 @@ def get_cause(id):
 
     return jsonify(cause.to_dict()), 200
 
-@cause_blueprint.route("/api/causes/featured", methods=["GET"])
+@cause_blueprint.route('/featured', methods=['GET'])
 def get_featured_causes():
     categories = db.session.query(Cause.category).distinct().all()
     featured_causes = []
@@ -51,10 +51,7 @@ def create_cause():
     if not data or 'title' not in data or 'description' not in data:
         return jsonify({'error': 'Invalid data'}), 400
     
-    if data.get('funding_goal', 0) < 0:
-        return jsonify({'error': 'Funding goal cannot be negative'}), 400
-    
-    if data.get('funding_goal', 0) == 0:
+    if data.get('funding_goal', 0) <= 0:
         return jsonify({'error': 'Funding goal must be greater than 0'}), 400
     
     image_url = None
