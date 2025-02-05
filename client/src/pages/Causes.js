@@ -29,21 +29,6 @@ const Causes = () => {
         fetchCauses();
     }, []);
 
-    useEffect(() => {
-        const socket = io("http://localhost:5000");
-        socket.on("new_donation", (updatedCause) => {
-            setCauses(prevCauses => prevCauses.map(cause =>
-                cause.id === updatedCause.id ? updatedCause : cause
-            ));
-            setFilteredCauses(prevCauses => prevCauses.map(cause =>
-                cause.id === updatedCause.id ? updatedCause : cause
-            ));
-        });
-        return () => {
-            socket.disconnect();
-        };
-    }, []);
-
     const handleSearch = () => {
         if (!searchTerm) {
             setFilteredCauses(causes);
