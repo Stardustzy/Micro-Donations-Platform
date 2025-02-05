@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CauseService from "../services/CauseService";
+import axios from "axios";
 
 const Causes = () => {
     const [causes, setCauses] = useState(null);
@@ -8,7 +9,10 @@ const Causes = () => {
     const [categories, setCategories] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchBy, setSearchBy] = useState("category");
-    const [donations, setDonations] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [selectedCause, setSelectedCause] = useState(null);
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [amount, setAmount] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,6 +27,21 @@ const Causes = () => {
             }
         };
         fetchCauses();
+    }, []);
+
+    useEffect(() => {
+        const socket = io("http://localhost:5000");
+        socket.on("new_donation", (updatedCause) => {
+            setCauses(prevCauses => prevCauses.map(cause =>
+                cause.id === updatedCause.id ? updatedCause : cause
+            ));
+            setFilteredCauses(prevCauses => prevCauses.map(cause =>
+                cause.id === updatedCause.id ? updatedCause : cause
+            ));
+        });
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
     const handleSearch = () => {
@@ -49,6 +68,39 @@ const Causes = () => {
             }
         }
     };
+
+    const openDonationModal = (cause) => {
+        setSelectedCause(cause);
+        setShowModal(true);
+    };
+
+    const closeDonationModal = () => {
+        setShowModal(false);
+        setSelectedCause(null);
+        setPhoneNumber("");
+        setAmount("");
+    };
+
+    const handleMpesaPayment = async () => {
+        if (!phoneNumber || !amount) {
+            alert("Please enter phone number and amount.");
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://localhost:5000/mpesa/stkpush", {
+                phoneNumber,
+                amount,
+                causeId: selectedCause.id,
+            });
+            alert("STK Push sent. Please check your phone to complete the payment.");
+            closeDonationModal();
+        } catch (error) {
+            console.error("Error processing payment", error);
+            alert("Payment failed. Please try again.");
+        }
+    };
+
 
     return (
         <div className="container">
@@ -87,7 +139,8 @@ const Causes = () => {
                                     <p className="card-text">{cause.description}</p>
                                     <p><strong>Funding Goal:</strong> ${cause.funding_goal}</p>
                                     <p><strong>Amount Raised:</strong> ${cause.amount_raised + (donations[cause.id] || 0)}</p>
-                                    <Link to={`/donate/${cause.id}`} className="btn btn-success ms-2">Donate</Link>
+                                    <p><strong>Category:</strong> {cause.category}</p>
+                                    <button onClick={() => openDonationModal(cause)} className="btn btn-success ms-2">Donate</button>
                                     <Link to={`/edit/${cause.id}`} className="btn btn-primary ms-2">Edit</Link>
                                     <button onClick={() => handleDelete(cause.id)} className="btn btn-danger ms-2">Delete</button>
                                 </div>
@@ -98,6 +151,44 @@ const Causes = () => {
                     <p className="text-center">No causes available.</p>
                 )}
             </section>
+
+            {showModal && selectedCause && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>Donate to {selectedCause.title}</h3>
+                        <p>Enter your phone number and amount to donate via M-Pesa:</p>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Phone Number (2547XXXXXXXX)"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                        <input
+                            type="number"
+                            className="form-control mt-2"
+                            placeholder="Amount in KES"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                        />
+                        <button onClick={handleMpesaPayment} className="btn btn-primary mt-2">Proceed to M-Pesa</button>
+                        <button onClick={closeDonationModal} className="btn btn-secondary mt-2">Close</button>
+                    </div>
+                </div>
+            )}
+
+            {/* Pagination */}
+            <nav aria-label="Page navigation">
+                <ul className="pagination justify-content-center">
+                    {Array.from({ length: Math.ceil(filteredCauses.length / itemsPerPage) }, (_, index) => (
+                        <li key={index} className={`page-item ${currentPage === index + 1 ? "active" : ""}`}>
+                            <button className="page-link" onClick={() => handlePageChange(index + 1)}>
+                                {index + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
 
             {/* CTA Section */}
             <section className="my-4">
@@ -116,7 +207,7 @@ const Causes = () => {
                     {[
                         { question: "How do I donate to a cause?", answer: "You can donate by clicking the 'Donate' button on any cause and following the instructions." },
                         { question: "Can I track my donation’s impact?", answer: "Yes! We provide updates on how your donations are being used." },
-                        { question: "How do I submit a new cause?", answer: "You can submit a new cause by contacting us through the 'Contact' page." },
+                        { question: "How do I submit a new cause?", answer: "You can submit a new cause by clicking on the 'Create Cause' button on the 'Home' page." },
                         { question: "Are my donations secure?", answer: "Absolutely! We use secure payment gateways to ensure your transactions are safe." }
                     ].map((faq, index) => (
                         <div className="accordion-item" key={index}>
