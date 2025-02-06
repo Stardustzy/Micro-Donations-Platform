@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from config import configurations
 from flask_bcrypt import Bcrypt
+from flask_restful import Api
 from models import db
 
 migrate = Migrate()
@@ -14,33 +15,41 @@ def create_app():
     Application factory function to create and configure the Flask app.
     """
     app = Flask(__name__)
+    api = Api(app)
 
-    # Load configuration from the config file
     config_name = os.getenv("FLASK_CONFIG", "production")  
     app.config.from_object(configurations[config_name])
 
-    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     bcrypt.init_app(app)
     db.app = app
 
-    # Enable CORS
     CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+ 
+    from routes.auth_routes import RegisterResource, LoginResource, LogoutResource
+    from routes.cause_routes import CauseResource, FeaturedCausesResource, UploadFileResource
+    from routes.donation_routes import DonationResource, DonationsByCauseResource
+    from routes.reward_routes import RewardResource, RedeemRewardResource
+    from routes.mpesa_routes import MpesaSTKPushResource, MpesaCallbackResource
 
-    # Import and register Blueprints here 
-    from routes.auth_routes import auth_blueprint
-    from routes.cause_routes import cause_blueprint
-    from routes.donation_routes import donation_blueprint
-    from routes.reward_routes import reward_blueprint
+    api.add_resource(RegisterResource, '/api/auth/register')
+    api.add_resource(LoginResource, '/api/auth/login')
+    api.add_resource(LogoutResource, '/api/auth/logout')
 
-    # Register Blueprints for modularized routing
-    app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
-    app.register_blueprint(cause_blueprint, url_prefix='/api/causes')
-    app.register_blueprint(donation_blueprint, url_prefix='/api/donations')
-    app.register_blueprint(reward_blueprint, url_prefix='/api/rewards')
+    api.add_resource(CauseResource, '/api/causes')
+    api.add_resource(FeaturedCausesResource, '/api/causes/featured')
+    api.add_resource(UploadFileResource, '/api/causes/upload')
 
-    # Root route for testing
+    api.add_resource(DonationResource, '/api/donations')
+    api.add_resource(DonationsByCauseResource, '/api/causes/<int:cause_id>/donations')
+
+    api.add_resource(RewardResource, '/api/rewards')
+    api.add_resource(RedeemRewardResource, '/api/rewards/<int:reward_id>/redeem')
+
+    api.add_resource(MpesaSTKPushResource, '/api/mpesa/stk_push')
+    api.add_resource(MpesaCallbackResource, '/api/mpesa/callback')
+
     @app.route('/')
     def index():
         return {
