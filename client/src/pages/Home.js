@@ -1,222 +1,318 @@
-import React, { useState, useEffect } from "react";
-import CauseService from "../services/CauseService";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "framer-motion";
+import Slider from "react-slick";
+import { Heart, Users, Globe } from "lucide-react";
+import CountUp from "react-countup";
+import Blob from "../components/Blob";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Home = () => {
   const [causes, setCauses] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [news, setNews] = useState([]);
+
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const controls = useAnimation();
 
   useEffect(() => {
-    CauseService.getFeaturedCauses()
-      .then((data) => setCauses(data))
-      .catch((error) => console.error("Error fetching featured causes:", error));
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [inView, controls]);
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  useEffect(() => {
+    setCauses([
+      {
+        id: 1,
+        title: "Clean Water for All",
+        description: "Help us build wells in water-scarce communities.",
+        funding_goal: 10000,
+        amount_raised: 6700,
+        image_url: "https://images.unsplash.com/photo-1503428593586-e225b39bddfe",
+      },
+      {
+        id: 2,
+        title: "Sponsor a Child’s Education",
+        description: "Provide learning materials and school fees for children.",
+        funding_goal: 15000,
+        amount_raised: 11000,
+        image_url: "https://images.unsplash.com/photo-1596496053294-26e51c1b3f6f",
+      },
+      {
+        id: 3,
+        title: "Medical Camp for Rural Areas",
+        description: "Bring essential healthcare to remote communities.",
+        funding_goal: 20000,
+        amount_raised: 15400,
+        image_url: "https://images.unsplash.com/photo-1588776814546-bcfb4c8d57d1",
+      },
+      {
+        id: 4,
+        title: "Plant Trees for a Greener Earth",
+        description: "Support reforestation efforts worldwide.",
+        funding_goal: 12000,
+        amount_raised: 8900,
+        image_url: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+      },
+    ]);
+
+    setTestimonials([
+      {
+        name: "Jane Doe",
+        role: "Donor",
+        text: "This platform has made it so easy to support causes I care about.",
+        image: "https://randomuser.me/api/portraits/women/44.jpg",
+      },
+      {
+        name: "John Smith",
+        role: "Recipient",
+        text: "Thanks to the generous donors, we were able to launch our education project.",
+        image: "https://randomuser.me/api/portraits/men/45.jpg",
+      },
+      {
+        name: "Sarah Lee",
+        role: "Partner",
+        text: "A transparent and impactful way to make a difference.",
+        image: "https://randomuser.me/api/portraits/women/68.jpg",
+      },
+      {
+        name: "Carlos Gomez",
+        role: "Volunteer",
+        text: "Amazing opportunity to help and be part of real change.",
+        image: "https://randomuser.me/api/portraits/men/32.jpg",
+      },
+    ]);
+
+    setNews([
+      {
+        title: "New Education Initiative Launched",
+        text: "Helping underprivileged children access quality education.",
+        image: "https://unsplash.it/400/300?image=1032",
+      },
+      {
+        title: "Donor Spotlight: Jane Doe",
+        text: "Meet one of our most consistent donors and hear her story.",
+        image: "https://unsplash.it/400/300?image=1027",
+      },
+      {
+        title: "10,000 Trees Planted",
+        text: "Thanks to your donations, we've reforested acres of land.",
+        image: "https://unsplash.it/400/300?image=1025",
+      },
+      {
+        title: "Free Medical Camp Launched",
+        text: "Improving lives with free medical services in rural zones.",
+        image: "https://unsplash.it/400/300?image=1021",
+      },
+    ]);
   }, []);
 
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    arrows: false,
+  };
+
   return (
-    <div>
-      {/* Hero Section */}
+    <div className="max-w-7xl mx-auto px-4">
+      {/* Hero */}
       <motion.section
-        className="hero text-center text-white py-5"
-        style={{ background: "#007bff", color: "white" }}
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.2 }} 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-blue-600 text-white py-20 relative overflow-hidden text-center"
       >
-        <div className="container">
-          <h1 className="display-4">Empower Change with Micro-Donations</h1>
-          <p className="lead">
-            Small contributions can make a huge impact on education, healthcare, and the environment.
-          </p>
-          <Link to="/donate" className="btn btn-light btn-lg">
-            Start Donating
-          </Link>
-        </div>
+        <Blob position="top-left" color="#ffffff20" />
+        <Blob position="bottom-right" color="#ffffff20" />
+        <h1 className="text-4xl font-bold mb-4">Empower Change with Micro-Donations</h1>
+        <p className="text-lg mb-6">
+          Small contributions can make a huge impact on education, healthcare, and the environment.
+        </p>
+        <Link
+          to="/donate"
+          className="inline-block bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-3 px-6 rounded-full"
+        >
+          Start Donating
+        </Link>
       </motion.section>
 
-      {/* Features Section */}
-      <section className="container my-5">
-        <div className="row text-center">
-          <div className="col-md-4">
-            <i className="bi bi-heart display-4 text-primary"></i>
-            <h3 className="mt-3">Secure Donations</h3>
-            <p>Our platform ensures safe and transparent transactions for all contributions.</p>
-          </div>
-          <div className="col-md-4">
-            <i className="bi bi-people display-4 text-primary"></i>
-            <h3 className="mt-3">Community Impact</h3>
-            <p>Support meaningful causes and help communities grow with small donations.</p>
-          </div>
-          <div className="col-md-4">
-            <i className="bi bi-globe display-4 text-primary"></i>
-            <h3 className="mt-3">Global Reach</h3>
-            <p>Donate from anywhere in the world and support causes globally.</p>
-          </div>
+      {/* Features */}
+      <section className="my-16 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[Heart, Users, Globe].map((Icon, i) => (
+            <div key={i} className="flex flex-col items-center">
+              <Icon size={48} className="text-blue-600 mb-4" />
+              <h2 className="text-lg font-semibold mb-2">
+                {"Secure Donations|Community Impact|Global Reach".split("|")[i]}
+              </h2>
+              <p className="text-gray-600">
+                {[
+                  "Safe and transparent transactions for all contributions.",
+                  "Support meaningful causes with small donations.",
+                  "Donate from anywhere in the world.",
+                ][i]}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Causes Section */}
-      <section className="container my-5">
-        <h2 className="text-center mb-4">Explore Causes</h2>
-        <div className="row">
-          {causes.map((cause) => (
-            <motion.div
-              key={cause.id}
-              className="col-md-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.2 }} 
-              viewport={{ once: true }} 
-            >
-              <div className="card mb-4 shadow-sm">
-                {cause.image_url && (
-                  <img src={cause.image_url} className="card-img-top" alt={cause.title} />
-                )}
-                <div className="card-body">
-                  <h5 className="card-title">{cause.title}</h5>
-                  <p className="card-text">{cause.description}</p>
-                  <p><strong>Goal:</strong> ${cause.funding_goal}</p>
-                  <p><strong>Raised:</strong> ${cause.amount_raised}</p>
-                  <div className="progress mb-3">
+      {/* Featured Causes */}
+      <section className="my-16">
+        <h2 className="text-2xl font-bold text-center mb-10">Featured Causes</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {causes.map((cause) => {
+            const progress = (cause.amount_raised / cause.funding_goal) * 100;
+            return (
+              <motion.div
+                key={cause.id}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-white rounded-xl shadow-md overflow-hidden"
+              >
+                <img
+                  src={cause.image_url}
+                  alt={cause.title}
+                  className="w-full h-40 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">{cause.title}</h3>
+                  <p className="text-sm text-gray-600 mb-2">{cause.description}</p>
+                  <div className="text-sm text-gray-700 mb-1">
+                    <strong>Goal:</strong> ${cause.funding_goal}
+                  </div>
+                  <div className="text-sm text-gray-700 mb-3">
+                    <strong>Raised:</strong> ${cause.amount_raised}
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
                     <div
-                      className="progress-bar"
-                      role="progressbar"
-                      style={{
-                        width: `${(cause.amount_raised / cause.funding_goal) * 100}%`,
-                      }}
-                      aria-valuenow={(cause.amount_raised / cause.funding_goal) * 100}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
+                      className="bg-blue-600 h-2.5 rounded-full"
+                      style={{ width: `${progress}%` }}
                     ></div>
                   </div>
-                  <Link to={`/causes/${cause.id}`} className="btn btn-primary">View Cause</Link>
+                  <Link
+                    to={`/causes/${cause.id}`}
+                    className="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                  >
+                    View Cause
+                  </Link>
                 </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Statistics */}
+      <section className="my-16">
+        <h2 className="text-2xl font-bold text-center mb-10">Our Impact in Numbers</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          {[{ label: "Donations", value: 45000, color: "text-green-600" }, { label: "Projects", value: 120, color: "text-purple-600" }, { label: "Volunteers", value: 300, color: "text-pink-600" }].map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              className="p-6 bg-white rounded-xl shadow-lg"
+            >
+              <div className={`text-4xl font-extrabold ${stat.color}`}>
+                <CountUp end={stat.value} duration={2.5} separator="," />
               </div>
+              <p className="mt-2 text-gray-700 font-medium">{stat.label}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Statistics Section */}
+      {/* Testimonials */}
+      <section className="my-16">
+        <h2 className="text-2xl font-bold text-center mb-10">What People Say</h2>
+        <Slider {...sliderSettings}>
+          {testimonials.map((item, i) => (
+            <div key={i} className="p-6 text-center">
+              <img src={item.image} alt={item.name} className="mx-auto rounded-full w-24 h-24 mb-4" />
+              <p className="italic text-gray-600 mb-2">"{item.text}"</p>
+              <p className="font-semibold text-lg">{item.name}</p>
+              <p className="text-sm text-blue-500">{item.role}</p>
+            </div>
+          ))}
+        </Slider>
+      </section>
+
+      {/* Latest News */}
+      <div className="max-w-7xl mx-auto mt-16 mb-20 px-4">
+        <h2 className="text-3xl font-semibold text-center mb-8">Latest News</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {news.map((n, i) => (
+            <div key={i} className="bg-white rounded shadow overflow-hidden hover:scale-105 transition-transform duration-300">
+              <img
+                src={n.image}
+                alt={n.title}
+                className="w-full h-44 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold">{n.title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{n.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
       <motion.section
-        className="text-center py-5"
-        style={{ background: "#f8f9fa" }}
-        initial={{ opacity: 0, y: 20 }} 
-        whileInView={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.4 }} 
-        viewport={{ once: true }} 
+        ref={ref}
+        initial="hidden"
+        animate={controls}
+        variants={fadeInUp}
+        className="bg-cyan-100 py-16 mt-16"
       >
-        <div className="container">
-          <h2 className="mb-4">Our Impact</h2>
-          <div className="row">
-            <div className="col-md-4">
-              <h3>$1M+</h3>
-              <p>Total Donations</p>
-            </div>
-            <div className="col-md-4">
-              <h3>10,000+</h3>
-              <p>Donors</p>
-            </div>
-            <div className="col-md-4">
-              <h3>500+</h3>
-              <p>Causes Funded</p>
-            </div>
+        <div className="max-w-2xl mx-auto text-center px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            Join Us in Making a Difference
+          </h2>
+          <p className="text-lg text-gray-600 mb-6">
+            Your small contributions can change lives. Start donating or create a cause today.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              to="/donate"
+              className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition"
+            >
+              Donate Now
+            </Link>
+            <Link
+              to="/create-cause"
+              className="border-2 border-green-600 text-green-600 px-6 py-3 rounded-lg hover:bg-green-600 hover:text-white transition"
+            >
+              Start a Cause
+            </Link>
           </div>
         </div>
       </motion.section>
-
-      {/* Testimonials Section */}
-      <section className="container my-5">
-        <h2 className="text-center mb-4">What People Are Saying</h2>
-        <div className="row">
-          {[
-            {
-              text: "This platform has made it so easy to support causes I care about. Highly recommend!",
-              author: "Jane Doe, Donor",
-            },
-            {
-              text: "Thanks to the generous donors, we were able to fund our education initiative.",
-              author: "John Smith, Recipient",
-            },
-            {
-              text: "A transparent and impactful way to make a difference in the world.",
-              author: "Sarah Lee, Partner",
-            },
-          ].map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className="col-md-4"
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.2 * index }} 
-              viewport={{ once: true }} 
-            >
-              <div className="card mb-4 shadow-sm">
-                <div className="card-body">
-                  <p className="card-text">{testimonial.text}</p>
-                  <p className="text-muted">- {testimonial.author}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Blog/News Section */}
-      <section className="container my-5">
-        <h2 className="text-center mb-4">Latest News</h2>
-        <div className="row">
-          {[
-            {
-              image: "https://via.placeholder.com/300",
-              title: "New Education Initiative Launched",
-              text: "Learn how our latest project is helping underprivileged children access quality education.",
-            },
-            {
-              image: "https://via.placeholder.com/300",
-              title: "Donor Spotlight: Jane Doe",
-              text: "Meet Jane, one of our top donors, and learn why she supports our platform.",
-            },
-            {
-              image: "https://via.placeholder.com/300",
-              title: "Environmental Cause Success",
-              text: "See how donations helped plant 10,000 trees in deforested areas.",
-            },
-          ].map((news, index) => (
-            <motion.div
-              key={index}
-              className="col-md-4"
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 * index }} 
-              viewport={{ once: true }} 
-            >
-              <div className="card mb-4 shadow-sm">
-                <img src={news.image} className="card-img-top" alt={news.title} />
-                <div className="card-body">
-                  <h5 className="card-title">{news.title}</h5>
-                  <p className="card-text">{news.text}</p>
-                  <a href="#" className="btn btn-primary">
-                    Read More
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="text-center bg-light py-5">
-        <div className="container">
-          <h2>Join Us in Making a Difference</h2>
-          <p>Your small contributions can change lives. Start donating or create a cause today.</p>
-          <Link to="/donate" className="btn btn-success btn-lg mx-2">Donate Now</Link>
-          <Link to="/create-cause" className="btn btn-warning btn-lg mx-2">Start a Cause</Link>
-        </div>
-      </section>
     </div>
   );
-}
+};
 
 export default Home;
+
+
 

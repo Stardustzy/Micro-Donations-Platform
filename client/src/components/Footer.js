@@ -1,79 +1,118 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { motion, useAnimation, useInView } from "framer-motion";
+import {
+    Facebook,
+    Twitter,
+    Linkedin,
+    Instagram,
+    Youtube,
+    PartyPopper
+} from "lucide-react";
 
 const Footer = () => {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true });
+    const controls = useAnimation();
+
+    useEffect(() => {
+        if (inView) {
+            controls.start("visible");
+        }
+    }, [inView, controls]);
+
+    const fadeIn = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: "easeOut" },
+        },
+    };
+
+    const quickLinks = [
+        { name: "Home", link: "/" },
+        { name: "Create Cause", link: "/create-cause" },
+        { name: "Causes", link: "/causes" },
+        { name: "Register here!", link: "/register" },
+    ];
+
+    const socialLinks = [
+        { icon: <Facebook className="w-6 h-6" />, link: "https://facebook.com/microdonationskenya" },
+        { icon: <Twitter className="w-6 h-6" />, link: "https://twitter.com/microdonationskenya" },
+        { icon: <Linkedin className="w-6 h-6" />, link: "https://linkedin.com/in/microdonationskenya" },
+        { icon: <Instagram className="w-6 h-6" />, link: "https://instagram.com/microdonationskenya" },
+        { icon: <Youtube className="w-6 h-6" />, link: "https://youtube.com/@microdonationskenya" },
+    ];
+
     return (
-        <footer className="bg-dark text-light py-4 mt-5">
-            <div className="container">
-                <div className="row">
-
-                    {/* Quick Links */}
-                    <div className="col-md-4 mb-3">
-                        <h5 className="text-center">Quick Links</h5>
-                        <div className="row">
-                            {[
-                                { name: "Home", link: "/" },
-                                { name: "Create Cause", link: "/create-cause" },
-                                { name: "Causes", link: "/causes" },
-                                { name: "Register here!", link: "/register" }
-                            ].map((item, index) => (
-                                <div key={index} className="col-6 col-md-12 mb-2">
-                                    <a href={item.link} className="text-decoration-none">
-                                        <div className="card text-center shadow-sm bg-primary text-light">
-                                            <div className="card-body py-2">
-                                                <h6 className="mb-0">{item.name}</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            ))}
-                        </div>
+        <motion.footer
+            ref={ref}
+            initial="hidden"
+            animate={controls}
+            variants={fadeIn}
+            className="bg-gray-900 text-white pt-12 px-4 mt-20"
+        >
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Quick Links */}
+                <div>
+                    <h5 className="text-xl font-semibold mb-4 text-center">Quick Links</h5>
+                    <div className="flex flex-col items-center space-y-3">
+                        {quickLinks.map((item, index) => (
+                            <Link
+                                key={index}
+                                to={item.link}
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded shadow text-center transition"
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
                     </div>
-
-                    {/* Social Media */}
-                    <div className="col-md-4 mb-3">
-                        <div className="card bg-secondary text-light">
-                            <div className="card-body text-center">
-                                <h5 className="card-title">Follow Us</h5>
-                                <div className="d-flex justify-content-center flex-wrap">
-                                    {[
-                                        { icon: "facebook", link: "https://facebook.com/microdonationskenya" },
-                                        { icon: "twitter", link: "https://twitter.com/microdonationskenya" },
-                                        { icon: "linkedin", link: "https://linkedin.com/in/microdonationskenya" },
-                                        { icon: "instagram", link: "https://instagram.com/microdonationskenya" },
-                                        { icon: "tiktok", link: "https://tiktok.com/@microdonationskenya" },
-                                        { icon: "youtube", link: "https://youtube.com/@microdonationskenya" }
-                                    ].map((social, index) => (
-                                        <a key={index} href={social.link} className="text-light mx-2" target="_blank" rel="noopener noreferrer">
-                                            <i className={`fab fa-${social.icon} fa-2x`}></i>
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    {/* Newsletter Subscription */}
-                    <div className="col-md-4 mb-3">
-                        <div className="card bg-info text-light">
-                            <div className="card-body">
-                                <h5 className="card-title text-center">Subscribe to Our Newsletter</h5>
-                                <form>
-                                    <div className="input-group mb-3">
-                                        <input type="email" className="form-control" placeholder="Enter your email" required />
-                                        <button className="btn btn-primary" type="submit">Subscribe</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
-                <hr className="bg-light" />
-                <p className="text-center mb-0">&copy; {new Date().getFullYear()} Micro-Donation Platform LLC. All Rights Reserved.</p>
+                {/* Social Media */}
+                <div className="text-center">
+                    <h5 className="text-xl font-semibold mb-4">Follow Us</h5>
+                    <div className="flex justify-center gap-4">
+                        {socialLinks.map((item, index) => (
+                            <a
+                                key={index}
+                                href={item.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-white hover:text-blue-300 transition"
+                            >
+                                {item.icon}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Newsletter Subscription */}
+                <div>
+                    <h5 className="text-xl font-semibold mb-4 text-center">Subscribe to Our Newsletter</h5>
+                    <form className="flex flex-col sm:flex-row items-center gap-2 justify-center">
+                        <input
+                            type="email"
+                            required
+                            placeholder="Enter your email"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md text-gray-900"
+                        />
+                        <button
+                            type="submit"
+                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition"
+                        >
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
             </div>
-        </footer>
+
+            <hr className="my-6 border-gray-700" />
+            <p className="text-center text-sm text-gray-400 pb-4">
+                &copy; {new Date().getFullYear()} Micro-Donation Platform LLC. All Rights Reserved.
+            </p>
+        </motion.footer>
     );
 };
 
