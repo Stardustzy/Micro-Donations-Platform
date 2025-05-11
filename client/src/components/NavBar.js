@@ -23,7 +23,7 @@ const NavBar = () => {
                             className="h-8 w-8 sm:h-10 sm:w-10 object-contain rounded-full transition-transform duration-300 hover:scale-105"
                         />
                         <span className="text-lg sm:text-xl font-bold text-green-500 hover:text-green-400 transition">
-                            Micro-Donation Platform
+                            Micro-Donations Platform
                         </span>
                     </Link>
 

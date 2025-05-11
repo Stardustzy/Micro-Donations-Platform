@@ -138,17 +138,17 @@ const Home = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-blue-600 text-white py-20 relative overflow-hidden text-center"
+        className="bg-cyan-100 text-black py-20 relative overflow-hidden text-center"
       >
-        <Blob position="top-left" color="#ffffff20" />
-        <Blob position="bottom-right" color="#ffffff20" />
+        <Blob position="top-left" color="#bbf7d0" />
+        <Blob position="bottom-right" color="#bbf7d0" />
         <h1 className="text-4xl font-bold mb-4">Empower Change with Micro-Donations</h1>
         <p className="text-lg mb-6">
           Small contributions can make a huge impact on education, healthcare, and the environment.
         </p>
         <Link
           to="/donate"
-          className="inline-block bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-3 px-6 rounded-full"
+          className="inline-block bg-green-600 hover:bg-green-700 text-black font-semibold py-3 px-6 rounded-full"
         >
           Start Donating
         </Link>
@@ -159,7 +159,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[Heart, Users, Globe].map((Icon, i) => (
             <div key={i} className="flex flex-col items-center">
-              <Icon size={48} className="text-blue-600 mb-4" />
+              <Icon size={48} className="text-green-600 mb-4" />
               <h2 className="text-lg font-semibold mb-2">
                 {"Secure Donations|Community Impact|Global Reach".split("|")[i]}
               </h2>
@@ -204,13 +204,13 @@ const Home = () => {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
                     <div
-                      className="bg-blue-600 h-2.5 rounded-full"
+                      className="bg-green-600 h-2.5 rounded-full"
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
                   <Link
                     to={`/causes/${cause.id}`}
-                    className="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                    className="block text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
                   >
                     View Cause
                   </Link>
@@ -285,7 +285,7 @@ const Home = () => {
         variants={fadeInUp}
         className="bg-cyan-100 py-16 mt-16"
       >
-        <div className="max-w-2xl mx-auto text-center px-4">
+        <div className="max-w-7xl mx-auto text-center px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             Join Us in Making a Difference
           </h2>
