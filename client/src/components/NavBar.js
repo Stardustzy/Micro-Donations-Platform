@@ -53,7 +53,7 @@ const NavBar = () => {
                 </div>
 
                 {menuOpen && (
-                    <div className="md:hidden bg-white px-4 py-4 shadow-lg">
+                    <div className="md:hidden bg-gray-900 px-4 py-4 shadow-lg fixed top-[80px] left-0 w-full z-50 ">
                         <ul className="space-y-4">
                             {user ? (
                                 <>
@@ -64,7 +64,7 @@ const NavBar = () => {
                                                 logout();
                                                 closeDrawer();
                                             }}
-                                            className="flex items-center gap-2 text-red-500"
+                                            className="flex items-center gap-2 text-red-400 hover:text-red-500 transition"
                                         >
                                             <LogOut size={18} /> Logout
                                         </button>
@@ -107,7 +107,7 @@ const MobileLink = ({ to, icon, text, close, currentPath }) => {
             <Link
                 to={to}
                 onClick={close}
-                className={`flex items-center gap-2 ${isActive ? "text-green-600 font-semibold" : "text-gray-800 hover:text-green-600"
+                className={`flex items-center gap-2 ${isActive ? "text-green-400 font-semibold" : "text-gray-300 hover:text-green-400 transition "
                     }`}
             >
                 {icon} {text}
