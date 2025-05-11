@@ -49,7 +49,7 @@ const Home = () => {
         description: "Provide learning materials and school fees for children.",
         funding_goal: 15000,
         amount_raised: 11000,
-        image_url: "https://images.unsplash.com/photo-1596496053294-26e51c1b3f6f",
+        image_url: "https://images.unsplash.com/photo-1607746882042-944635dfe10e",
       },
       {
         id: 3,
@@ -57,7 +57,7 @@ const Home = () => {
         description: "Bring essential healthcare to remote communities.",
         funding_goal: 20000,
         amount_raised: 15400,
-        image_url: "https://images.unsplash.com/photo-1588776814546-bcfb4c8d57d1",
+        image_url: "https://unsplash.com/photos/two-young-volunteers-filling-in-medical-documents-and-entering-data-in-database-while-working-in-refugee-camp-Upk6PUU2wlQ",
       },
       {
         id: 4,
@@ -132,7 +132,7 @@ const Home = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4">
+    <div className="max-w-7xl mx-auto px-4" flex>
       {/* Hero */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -231,7 +231,7 @@ const Home = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="p-6 bg-white rounded-xl shadow-lg"
+              className="p-6 bg-cyan-100 rounded-xl shadow-lg"
             >
               <div className={`text-4xl font-extrabold ${stat.color}`}>
                 <CountUp end={stat.value} duration={2.5} separator="," />
@@ -247,11 +247,11 @@ const Home = () => {
         <h2 className="text-2xl font-bold text-center mb-10">What People Say</h2>
         <Slider {...sliderSettings}>
           {testimonials.map((item, i) => (
-            <div key={i} className="p-6 text-center">
+            <div key={i} className="p-6 text-center border-t-4 border-green-600 bg-white shadow rounded">
               <img src={item.image} alt={item.name} className="mx-auto rounded-full w-24 h-24 mb-4" />
-              <p className="italic text-gray-600 mb-2">"{item.text}"</p>
+              <p className="italic text-gray-900 mb-2">"{item.text}"</p>
               <p className="font-semibold text-lg">{item.name}</p>
-              <p className="text-sm text-blue-500">{item.role}</p>
+              <p className="text-sm text-green-600">{item.role}</p>
             </div>
           ))}
         </Slider>
