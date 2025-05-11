@@ -138,20 +138,25 @@ const Home = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-cyan-100 text-black py-20 relative overflow-hidden text-center"
+        className="relative overflow-hidden bg-cyan-100 text-black py-20 text-center"
       >
-        <Blob position="top-left" color="#bbf7d0" />
-        <Blob position="bottom-right" color="#bbf7d0" />
-        <h1 className="text-4xl font-bold mb-4">Empower Change with Micro-Donations</h1>
-        <p className="text-lg mb-6">
-          Small contributions can make a huge impact on education, healthcare, and the environment.
-        </p>
-        <Link
-          to="/donate"
-          className="inline-block bg-green-600 hover:bg-green-700 text-black font-semibold py-3 px-6 rounded-full"
-        >
-          Start Donating
-        </Link>
+        <div className="absolute inset-0 z-0">
+          <Blob position="top-left" color="#bbf7d0" />
+          <Blob position="bottom-right" color="#bbf7d0" />
+        </div>
+
+        <div className="relative z-10">
+          <h1 className="text-4xl font-bold mb-4">Empower Change with Micro-Donations</h1>
+          <p className="text-lg mb-6">
+            Small contributions can make a huge impact on education, healthcare, and the environment.
+          </p>
+          <Link
+            to="/donate"
+            className="inline-block bg-green-600 hover:bg-green-700 text-black font-semibold py-3 px-6 rounded-full"
+          >
+            Start Donating
+          </Link>
+        </div>
       </motion.section>
 
       {/* Features */}
@@ -247,7 +252,7 @@ const Home = () => {
         <h2 className="text-2xl font-bold text-center mb-10">What People Say</h2>
         <Slider {...sliderSettings}>
           {testimonials.map((item, i) => (
-            <div key={i} className="p-6 text-center border-t-4 border-green-600 bg-white shadow rounded">
+            <div key={i} className="p-6 text-center border-t-4 border-green-600 bg-cyan-50 shadow rounded">
               <img src={item.image} alt={item.name} className="mx-auto rounded-full w-24 h-24 mb-4" />
               <p className="italic text-gray-900 mb-2">"{item.text}"</p>
               <p className="font-semibold text-lg">{item.name}</p>
