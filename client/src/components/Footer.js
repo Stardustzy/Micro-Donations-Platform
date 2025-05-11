@@ -7,7 +7,9 @@ import {
     Linkedin,
     Instagram,
     Youtube,
-    PartyPopper
+    Home,
+    User,
+    ClipboardList
 } from "lucide-react";
 import logo from "../assets/micro-logo.jpg";
 
@@ -32,10 +34,9 @@ const Footer = () => {
     };
 
     const quickLinks = [
-        { name: "Home", link: "/" },
-        { name: "Create Cause", link: "/create-cause" },
-        { name: "Causes", link: "/causes" },
-        { name: "Register here!", link: "/register" },
+        { name: "Home", link: "/", icon: <Home size={18} className="inline-block mr-2" /> },
+        { name: "Causes", link: "/causes", icon: <ClipboardList size={18} className="inline-block mr-2" /> },
+        { name: "Register", link: "/register", icon: <User size={18} className="inline-block mr-2" /> },
     ];
 
     const socialLinks = [
@@ -63,8 +64,9 @@ const Footer = () => {
                             <Link
                                 key={index}
                                 to={item.link}
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded shadow text-center transition"
+                                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded shadow text-center transition"
                             >
+                                {item.icon}
                                 {item.name}
                             </Link>
                         ))}
