@@ -161,13 +161,13 @@ const Causes = () => {
                             placeholder="Search by title or description"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full px-4 py-2 outline-none text-sm"
+                            className="w-full max-w-full px-4 py-2 outline-none text-sm"
                         />
                     </div>
                     <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        className="w-full sm:w-[48%]  md:w-1/4 p-2 rounded-lg border bg-cyan-100"
+                        className="w-full max-w-full sm:w-[48%] md:w-1/4 p-2 rounded-lg border bg-cyan-100"
                     >
                         <option value="All">All Categories</option>
                         <option value="Health">Health</option>
@@ -177,7 +177,7 @@ const Causes = () => {
                     <select
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
-                        className="w-full sm:w-[48%] md:w-1/4 p-2 rounded-lg border bg-cyan-100"
+                        className="w-full max-w-full sm:w-[48%] md:w-1/4 p-2 rounded-lg border bg-cyan-100"
                     >
                         <option value="All">All Countries</option>
                         {allCountries.map((ctry, idx) => (
