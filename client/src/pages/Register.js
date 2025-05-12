@@ -41,7 +41,7 @@ const Register = () => {
     };
 
     return (
-        <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-green-100 px-4 overflow-hidden">
+        <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-green-100 px-4 py-16 overflow-hidden">
             {/* Reusable SVG Blobs */}
             <Blob position="top-left" color="#bbf7d0" />
             <Blob position="bottom-right" color="#bbf7d0" />

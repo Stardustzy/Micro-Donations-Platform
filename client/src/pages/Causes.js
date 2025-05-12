@@ -142,7 +142,7 @@ const Causes = () => {
     });
 
     return (
-        <div className="px-6 py-12 max-w-7xl mx-auto">
+        <div className="px-4 py-16 max-w-7xl mx-auto">
             <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

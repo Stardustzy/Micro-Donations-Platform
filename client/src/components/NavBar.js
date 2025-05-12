@@ -53,7 +53,7 @@ const NavBar = () => {
                 </div>
 
                 {menuOpen && (
-                    <div className="md:hidden bg-gray-900 px-4 py-4 shadow-lg fixed top-[80px] left-0 w-full z-50 ">
+                    <div className="md:hidden bg-gray-900 px-4 py-4 shadow-lg absolute top-[80px] left-0 w-full z-50 ">
                         <ul className="space-y-4">
                             {user ? (
                                 <>
