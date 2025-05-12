@@ -112,8 +112,8 @@ const Footer = () => {
             </div>
 
             <div className="flex flex-col items-center mt-8 space-y-2">
-                <p className="text-white font-bold text-lg">Powered by Micro-Donations Platform</p>
-                <img src={logo} alt="Micro-Donation Logo" className="h-12 w-auto md:h-16 object-contain" />
+                <p className="text-white font-bold text-lg">Micro-Donations Platform Logo</p>
+                <img src={logo} alt="Micro-Donations Logo" className="h-12 w-auto md:h-16 object-contain" />
             </div>
 
             <hr className="my-6 border-gray-700" />

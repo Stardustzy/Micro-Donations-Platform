@@ -1,4 +1,3 @@
-# server/routes/cause_routes.py
 import os
 from flask import request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename

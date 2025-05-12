@@ -76,35 +76,7 @@ def seed():
         ]
         db.session.add_all(donations)
 
-        # Rewards
-        rewards = [
-            Reward(
-                name="Thank You Certificate",
-                description="A personalized certificate to thank you for your support.",
-                donation_threshold=50
-            ),
-            Reward(
-                name="Eco-Friendly Tote Bag",
-                description="A reusable tote bag as a token of appreciation.",
-                donation_threshold=100
-            ),
-        ]
-        db.session.add_all(rewards)
-
-        # UserRewards
-        user_rewards = [
-            UserReward(
-                user_id=1,
-                reward_id=1
-            ),
-            UserReward(
-                user_id=1,
-                reward_id=2
-            )
-        ]
-        db.session.add_all(user_rewards)
-
-        db.session.commit()
+        
         
         print("✅ Database seeded successfully.")
 

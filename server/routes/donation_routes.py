@@ -1,4 +1,3 @@
-# server/routes/donation_routes.py
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 from models import db, Donation, Cause

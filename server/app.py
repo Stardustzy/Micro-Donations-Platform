@@ -30,7 +30,6 @@ def create_app():
     from routes.auth_routes import RegisterResource, LoginResource, LogoutResource
     from routes.cause_routes import CauseResource, FeaturedCausesResource, UploadFileResource
     from routes.donation_routes import DonationResource, DonationsByCauseResource
-    from routes.reward_routes import RewardResource, RedeemRewardResource
     from routes.mpesa_routes import MpesaSTKPushResource, MpesaCallbackResource
 
     api.add_resource(RegisterResource, '/api/auth/register')
@@ -43,9 +42,6 @@ def create_app():
 
     api.add_resource(DonationResource, '/api/donations')
     api.add_resource(DonationsByCauseResource, '/api/causes/<int:cause_id>/donations')
-
-    api.add_resource(RewardResource, '/api/rewards')
-    api.add_resource(RedeemRewardResource, '/api/rewards/<int:reward_id>/redeem')
 
     api.add_resource(MpesaSTKPushResource, '/api/mpesa/stk_push')
     api.add_resource(MpesaCallbackResource, '/api/mpesa/callback')

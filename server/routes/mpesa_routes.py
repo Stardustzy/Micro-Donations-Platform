@@ -1,4 +1,3 @@
-# server/routes/mpesa_routes.py
 from flask import request, jsonify
 from flask_restful import Resource
 from services.mpesa_service import MpesaService

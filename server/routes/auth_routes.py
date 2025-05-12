@@ -1,11 +1,9 @@
-#server/routes/auth_routes.py
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
 from models import db, User
 
-# Request parser for user registration and login
 auth_parser = reqparse.RequestParser()
 auth_parser.add_argument('username', type=str, help='Username is required')
 auth_parser.add_argument('email', type=str, required=True, help='Email is required')
