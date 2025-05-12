@@ -1,47 +1,58 @@
-from flask import request, jsonify
-from flask_restful import Resource, reqparse
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from models import db, User
+from datetime import timedelta
 
-auth_parser = reqparse.RequestParser()
-auth_parser.add_argument('username', type=str, help='Username is required')
-auth_parser.add_argument('email', type=str, required=True, help='Email is required')
-auth_parser.add_argument('password', type=str, required=True, help='Password is required')
+auth_bp = Blueprint('auth_bp', __name__)
 
-class RegisterResource(Resource):
-    def post(self):
-        args = auth_parser.parse_args()
-        if not args['username'] or not args['email'] or not args['password']:
-            return {'error': 'Invalid data'}, 400
+# Register route
+@auth_bp.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
 
-        if User.query.filter_by(email=args['email']).first():
-            return jsonify({'error': 'Email already in use'}), 400
+    name = data.get('name')
+    email = data.get('email')
+    password = data.get('password')
 
-        hashed_password = generate_password_hash(args['password'])
-        new_user = User(username=args['username'], email=args['email'], password_hash=hashed_password)
-        db.session.add(new_user)
+    if not all([name, email, password]):
+        return jsonify({"success": False, "message": "All fields are required"}), 400
+
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({"success": False, "message": "Email already in use"}), 400
+
+    user = User(name=name, email=email)
+    user.set_password(password)
+
+    try:
+        db.session.add(user)
         db.session.commit()
-
-        return jsonify({'message': 'User registered successfully', 'user': {'username': new_user.username, 'email': new_user.email}}), 201
-
-
-
-class LoginResource(Resource):
-    def post(self):
-        args = auth_parser.parse_args()
-
-        if not args['email'] or not args['password']:
-            return jsonify({'error': 'Invalid data'}), 400
-
-        user = User.query.filter_by(email=args['email']).first()
-        if user and check_password_hash(user.password_hash, args['password']):
-            access_token = create_access_token(identity=user.id)
-            return jsonify({'message': f'Welcome back, {user.username}!', 'token': access_token}), 200
-
-        return jsonify({'error': 'Invalid credentials'}), 401
+        return jsonify({"success": True, "message": "User registered successfully"})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"success": False, "message": "Server error"}), 500
 
 
-class LogoutResource(Resource):
-    def post(self):
-        return jsonify({'message': 'User logged out successfully'}), 200
+# Login route
+@auth_bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+
+    email = data.get('email')
+    password = data.get('password')
+
+    if not all([email, password]):
+        return jsonify({"success": False, "message": "Email and password required"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user or not user.check_password(password):
+        return jsonify({"success": False, "message": "Invalid credentials"}), 401
+
+    access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=1))
+
+    return jsonify({
+        "success": True, 
+        "message": "Login successful", 
+        "user": user.to_dict()
+    })
+

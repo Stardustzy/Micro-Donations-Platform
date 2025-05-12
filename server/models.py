@@ -1,7 +1,6 @@
-from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -9,92 +8,108 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), nullable=False, unique=True)
-    email = db.Column(db.String(120), nullable=False, unique=True)
-    password_hash = db.Column(db.String(256), nullable=False)
+    name = db.Column(db.String(80), nullable=False) 
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    donations = relationship('Donation', back_populates='user')
-    redeemed_rewards = relationship('UserReward', back_populates='user')
+    causes = db.relationship("Cause", backref="creator", lazy=True)
+    donations = db.relationship("Donation", backref="donor", lazy=True)
+    comments = db.relationship("Comment", backref="author", lazy=True)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def to_dict(self):
         return {
             "id": self.id,
-            "username": self.username,
+            "name": self.name,
             "email": self.email,
             "created_at": self.created_at.isoformat()
         }
-
-    def __repr__(self):
-        return f"<User {self.username}>"
-
 
 class Cause(db.Model):
     __tablename__ = 'causes'
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(120), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    funding_goal = db.Column(db.Float, nullable=False)
-    raised_amount = db.Column(db.Float, default=0.0)
+    image_url = db.Column(db.String(255))
+    goal_amount = db.Column(db.Float, nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    country = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    active = db.Column(db.Boolean, default=True)
-    image_url = db.Column(db.String(255), nullable=True)
-    category = db.Column(db.String(50), nullable=True)
 
-    donations = relationship('Donation', back_populates='cause')
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
-    def to_dict(self):
-        return {
+    donations = db.relationship("Donation", backref="cause", lazy=True)
+    comments = db.relationship("Comment", backref="cause", lazy=True)
+
+    @property
+    def raised_amount(self):
+        return sum(d.amount for d in self.donations)
+
+    def to_dict(self, include_user=False):
+        data = {
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "funding_goal": self.funding_goal,
-            "raised_amount": self.raised_amount,
             "image_url": self.image_url,
-            "category": self.category
+            "goal_amount": self.goal_amount,
+            "raised_amount": self.raised_amount,
+            "category": self.category,
+            "country": self.country,
+            "created_at": self.created_at.isoformat(),
+            "user_id": self.user_id,
         }
-
-    def __repr__(self):
-        return f"<Cause {self.title}>"
-
+        if include_user:
+            data["creator"] = self.creator.to_dict()
+        return data
 
 class Donation(db.Model):
     __tablename__ = 'donations'
 
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
-    donated_at = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    cause_id = db.Column(db.Integer, db.ForeignKey('causes.id'), nullable=False)
-    message = db.Column(db.Text, nullable=True)
-    reward_tier = db.Column(db.String(50), nullable=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-    user = relationship('User', back_populates='donations')
-    cause = relationship('Cause', back_populates='donations')
-
-    def assign_reward(self):
-        if self.amount >= 100:
-            self.reward_tier = "Gold"
-        elif self.amount >= 50:
-            self.reward_tier = "Silver"
-        elif self.amount >= 20:
-            self.reward_tier = "Bronze"
-        else:
-            self.reward_tier = None
-        db.session.commit()
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    cause_id = db.Column(db.Integer, db.ForeignKey("causes.id"), nullable=False)
 
     def to_dict(self):
         return {
             "id": self.id,
             "amount": self.amount,
-            "donated_at": self.donated_at.isoformat(),
+            "timestamp": self.timestamp.isoformat(),
             "user_id": self.user_id,
-            "cause_id": self.cause_id,
-            "message": self.message,
-            "reward_tier": self.reward_tier
+            "cause_id": self.cause_id
         }
 
-    def __repr__(self):
-        return f"<Donation {self.amount} to Cause {self.cause_id}>"
+class Comment(db.Model):
+    __tablename__ = "comments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    cause_id = db.Column(db.Integer, db.ForeignKey("causes.id"), nullable=False)
+
+    def to_dict(self, include_user=False):
+        data = {
+            "id": self.id,
+            "content": self.content,
+            "timestamp": self.timestamp.isoformat(),
+            "user_id": self.user_id,
+            "cause_id": self.cause_id
+        }
+        if include_user:
+            data["author"] = self.author.to_dict()
+        return data
+
+
+
 
