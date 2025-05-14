@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
-from server.models import db, Donation, Cause
+from models import db, Donation, Cause
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
