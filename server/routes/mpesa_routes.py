@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_restful import Resource
 from services.mpesa_service import MpesaService
-from .models import db, Donation
+from ..models import db, Donation
 
 class MpesaSTKPushResource(Resource):
     def post(self):
