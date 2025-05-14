@@ -2,7 +2,7 @@ import os
 from flask import request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_restful import Resource, reqparse
-from ..models import db, Cause
+from models import db, Cause
 
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
