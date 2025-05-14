@@ -48,6 +48,7 @@ zipp = "==3.20.2"
 gunicorn = "*"
 flask-restful = "*"
 requests = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
