@@ -1,0 +1,16 @@
+# MIT License
+# Original project by Benjamin Mweri Baya
+# Modified by Stardustzy
+# See LICENSE file for full license text.
+
+
+Perubahan yang saya lakukan pada proyek ini sepenuhnya kompatibel dengan lisensi MIT yang digunakan oleh pengembang asli, yaitu Benjamin Mweri Baya. MIT License adalah lisensi open-source yang sangat permisif, memungkinkan siapa pun untuk menggunakan, memodifikasi, mendistribusikan, dan mempublikasikan perangkat lunak, selama tetap mencantumkan salinan lisensi dan informasi hak cipta dari pemilik asli.
+
+Saya melakukan beberapa penyesuaian dan penambahan pada aplikasi ini, serta memperbarui dokumentasi, tanpa mengubah ketentuan lisensi. Sebagai bentuk kepatuhan terhadap lisensi:
+
+- Saya menyertakan file lisensi MIT di repositori:  
+  [https://github.com/Stardustzy/Micro-Donations-Platform/blob/main/LICENSE](https://github.com/Stardustzy/Micro-Donations-Platform/blob/main/LICENSE)
+- Saya mencantumkan informasi lisensi pada file `README.md`.
+- Saya juga menambahkan komentar lisensi di bagian atas file utama `app.py` sebagai bentuk penghormatan kepada pengembang asli.
+
+Dengan demikian, semua kontribusi saya dilakukan sesuai dengan prinsip etika dan ketentuan lisensi open-source yang berlaku.

@@ -1,3 +1,9 @@
+# MIT License
+# Original project by Benjamin Mweri Baya
+# Modified and maintained by Stardustzy
+# See LICENSE file in the root directory for full license details.
+
+
 from dotenv import load_dotenv
 load_dotenv()
 import os
